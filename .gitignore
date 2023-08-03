@@ -102,3 +102,6 @@ ENV/
 
 # Sublime project settings
 .sublime/
+
+# pycharm settings
+.idea/

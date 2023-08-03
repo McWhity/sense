@@ -35,7 +35,7 @@ class ScatIso(Scatterer):
         for the isotropic case this corresponds to the
         volume scattering coefficient ks
 
-        not that this is NOT the scattering cross section of a single particle!
+        note that this is NOT the scattering cross section of a single particle!
         """
         return {'hh' : self.sigma_s_hh, 'vv' : self.sigma_s_vv, 'hv' : self.sigma_s_hv}
 
@@ -47,7 +47,7 @@ class ScatIso(Scatterer):
 
 class ScatRayleigh(Scatterer):
     """
-    Isotropic scatterer definition
+    Rayleigh scatterer definition
     see 11.2 in Ulaby (2014)
     """
     def __init__(self, **kwargs):

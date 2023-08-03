@@ -9,3 +9,12 @@ Usage
     ./notebooks/Dubois95_SSRT.ipynb
     ./notebooks/sm_retrieval.ipynb
 
+Required input paramter
+-------------------------
+
+Water Cloud Model (surface part)
+
+C (empirical parameter .....
+
+D
+

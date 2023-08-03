@@ -1,9 +1,9 @@
 .. _Installation:
 
-Installation for Linux (tested with Ubuntu 20.04)
+Installation for Linux (tested with Ubuntu 22.04)
 ==================================================
 .. note::
-    The SenSE has been developed against Python 3.6.
+    The SenSE has been developed against Python 3.10.
     It cannot be guaranteed to work with previous Python versions.
 
 The first step is to clone the latest code and step into the check out directory::
@@ -51,6 +51,8 @@ To install for development, use::
 
 Further information
 -------------------
+
+.. literalinclude:: ./environment.yml
 
 Please see the `environment file <https://github.com/McWhity/sense/blob/master/environment.yml>`_ for a list of all installed dependencies during the installation process.
 

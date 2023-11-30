@@ -8,12 +8,12 @@ The backscattering signal of a ground pixel consists of surface scattering, volu
 
     tbd (add general information about RT)
 
-.. _surface
+.. _surface:
 
 Surface-scattering RT models
 ------------------------------
 
-.. _surface_wcm
+.. _surface_wcm:
 
 Water Cloud Model (WCM) surface part
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,6 +52,7 @@ where :math:`\theta` stands for the local incidence angle, :math:`k` is the rada
 The Fresnel reflectivity coefficient at nadir :math:`R_0` as well as for horizontal :math:`R_h` and vertical
 :math:`R_v` polarization can be written as
 
+
 .. math::
 
    \begin{aligned}
@@ -67,7 +68,7 @@ angles (10–70°). The authors state a validity range under bare soil condition
 Oh model 2004 (Oh04)
 ~~~~~~~~~~~~~~~~~~~~~
 
-Based on further research by Oh et al. (2002) :cite:`yisok_oh_quantitative_2002` and Oh (2004)
+Based on further research by Oh et al. (2002) :cite:`oh_semi-empirical_2002` and Oh (2004)
 :cite:`yisok_oh_quantitative_2004` the original apporach from 1992 (Oh92) was simplified by using soil moisture
 (:math:`mv`) instead of dielectric constant (:math:`\epsilon_r`) and fresnel reflectivity equations.
 Thus, in case of transforming the dielectric constant to soil moisture values, no additional information about

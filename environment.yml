@@ -14,6 +14,6 @@ dependencies:
   - scipy
   - future
   - numba
-  - numpy>=1.18,<1.24
   - distutils
+  - numpy>=1.18,<1.24
 

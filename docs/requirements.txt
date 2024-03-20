@@ -5,8 +5,7 @@ matplotlib
 scipy
 future
 numba
-distutils
-numpy>=1.18,<1.24
+numpy
 m2r
 docutils
 nbsphinx

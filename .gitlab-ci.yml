@@ -26,18 +26,18 @@ format-ruff-job:
     - ruff format --diff .
 
 
-docker-build-push-job:
-  stage: docker_container
-  when: on_success
-  services:
-    - name: docker:24.0-dind
-      alias: docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
-  image: docker:24.0-dind
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+# docker-build-push-job:
+#   stage: docker_container
+#   when: on_success
+#   services:
+#     - name: docker:24.0-dind
+#       alias: docker
+#   before_script:
+#     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+#   image: docker:24.0-dind
+#   script:
+#     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+#     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 
 linter-pylint-job:
@@ -47,6 +47,7 @@ linter-pylint-job:
   script:
     - pip install pylint
     - pylint .
+    - python setup.py install
 
 pages:
   script:

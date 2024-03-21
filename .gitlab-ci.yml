@@ -1,55 +1,56 @@
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Python.gitlab-ci.yml
+default:
+  before_script:
+    - pip install --upgrade pip
 
-# Official language image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/python/tags/
-image: python:latest
 
-# Change pip's cache directory to be inside the project directory since we can
-# only cache local items.
-variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+stages:
+  - format
+  - docker_container
+  - linter
 
-# https://pip.pypa.io/en/stable/topics/caching/
-cache:
-  paths:
-    - .cache/pip
 
-before_script:
-  - python --version ; pip --version  # For debugging
-  - pip install virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
-
-test:
+lint-ruff-job:
+  stage: linter
+  image: python:slim
+  when: on_success
   script:
-    - pip install ruff tox  # you can also use tox
-    - pip install --editable ".[test]"
-    - tox -e py,ruff
+    - pip install ruff
+    - ruff check --diff .
 
-run:
+
+format-ruff-job:
+  stage: format
+  image: python:slim
   script:
-    - pip install .
-    # run the command here
-  artifacts:
-    paths:
-      - build/*
+    - pip install ruff
+    - ruff format --diff .
+
+
+docker-build-push-job:
+  stage: docker_container
+  when: on_success
+  services:
+    - name: docker:24.0-dind
+      alias: docker
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+  image: docker:24.0-dind
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+
+
+linter-pylint-job:
+  stage: linter
+  when: on_success
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  script:
+    - pip install pylint
+    - pylint .
 
 pages:
   script:
     - pip install sphinx sphinx-rtd-theme
     - cd docs
     - make html
-    - mv build/html/ ../public/
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
-deploy:
-  stage: deploy
-  script: echo "Define your deployment script!"
-  environment: production
+    - mv build/html/ ../public/  

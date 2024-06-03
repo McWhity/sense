@@ -6,7 +6,6 @@ scipy
 future
 numba
 numpy
-m2r
 docutils
 nbsphinx
 ipykernel

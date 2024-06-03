@@ -11,7 +11,6 @@
 import sys
 import os
 from unittest.mock import MagicMock
-import m2r
 
 class Mock(MagicMock):
     @classmethod

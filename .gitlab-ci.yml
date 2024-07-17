@@ -1,57 +1,31 @@
-default:
-  before_script:
-    - pip install --upgrade pip
-
-
 stages:
-  - format
-  - docker_container
-  - linter
+  - documentation
+  - test
 
+variables:
+  PYTHON_VERSION: "latest"
 
-lint-ruff-job:
-  stage: linter
-  image: python:slim
-  when: on_success
+before_script:
+  - apt-get update -qq
+  - apt update && apt install -y build-essential libgdal-dev
+  - apt-get install -y pandoc
+  - python3 -m pip install .
+
+documentation:
+  stage: documentation
+  image: python:${PYTHON_VERSION}
   script:
-    - pip install ruff
-    - ruff check --diff .
-
-
-format-ruff-job:
-  stage: format
-  image: python:slim
-  script:
-    - pip install ruff
-    - ruff format --diff .
-
-
-# docker-build-push-job:
-#   stage: docker_container
-#   when: on_success
-#   services:
-#     - name: docker:24.0-dind
-#       alias: docker
-#   before_script:
-#     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
-#   image: docker:24.0-dind
-#   script:
-#     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
-#     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-
-
-linter-pylint-job:
-  stage: linter
-  when: on_success
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-  script:
-    - pip install pylint
-    - pylint .
-    - python setup.py install
-
-pages:
-  script:
-    - pip install sphinx sphinx-rtd-theme
     - cd docs
-    - make html
-    - mv build/html/ ../public/  
+    - make html  # Or whatever command you use to build your documentation
+  artifacts:
+    paths:
+      - docs/_build/html  # Adjust this path according to your documentation build output
+
+test:
+  stage: test
+  image: python:${PYTHON_VERSION}
+  script:
+    - pytest tests
+  only:
+    - dev
+    - master

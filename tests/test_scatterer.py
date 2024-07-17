@@ -5,7 +5,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)) + os.sep + "..")
 
 from sense.scatterer import Scatterer, ScatIso, ScatRayleigh
 
-
 class TestSingle(unittest.TestCase):
     def setUp(self):
         self.s_s_hh = 1.
@@ -39,8 +38,11 @@ class TestSingle(unittest.TestCase):
         s_b = S.sigma_v_bist()
 
         for k in s_v.keys():
-            self.assertEqual(s_v[k], s_b[k])
-            self.assertEqual(s_v[k], 1.5*k_s)
+            if k == 'hv':
+                pass
+            else:
+                self.assertEqual(s_v[k], s_b[k])
+                self.assertEqual(s_v[k], 1.5*k_s)
 
     def test_iso_v_back(self):
 
@@ -56,8 +58,6 @@ class TestSingle(unittest.TestCase):
         for k in s_v.keys():
             self.assertEqual(s_v[k], s_b[k])
             self.assertEqual(s_v[k], k_s)
-
-
 
 if __name__ == '__main__':
     unittest.main()

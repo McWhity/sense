@@ -83,7 +83,7 @@ class RTModel(Model):
 
         for k in ['surface', 'canopy']:
             assert k in self.models.keys()  # check that all models have been specified
-        if self.model.surface != 'WaterCloud':
+        if self.models.surface != 'WaterCloud':
             assert self.freq == self.surface.f, "Different frequencies in model and soil definition"
             # check that frequencies are the same!
 

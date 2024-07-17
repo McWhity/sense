@@ -13,8 +13,6 @@ from sense.util import f2lam
 def db(x):
     return 10.*np.log10(x)
 
-
-
 class TestModel(unittest.TestCase):
     def test_init(self):
         M = model.Model(theta=np.arange(10))
@@ -27,7 +25,8 @@ class TestSingle(unittest.TestCase):
     def test_init(self):
         # some dummy variables
         models = {'surface': 'abc', 'canopy':'efg'}
-        S = model.SingleScatRT(surface='abc', canopy='def', models=models, theta=self.theta, freq=self.freq)
+        soil = Soil(f=self.freq,s=0.01,eps=5. -3.j)
+        S = model.RTModel(surface=soil, canopy='def', models=models, theta=self.theta, freq=self.freq)
 
     def test_scat_isotropic(self):
         # some dummy variables
@@ -37,14 +36,14 @@ class TestSingle(unittest.TestCase):
         models = {'surface': 'Oh92', 'canopy': stype}
         eps = 5. -3.j
         soil = Soil(eps=eps, f=5., s=0.02)
-        can = OneLayer(ke_h=0.05, ke_v=0.05, d=3., ks_h = 0.02, ks_v = 0.02)
-        S = model.SingleScatRT(surface=soil, canopy=can, models=models, theta=self.theta, freq=self.freq)
+        can = OneLayer(ke_h=0.05, ke_v=0.05, d=3., ks_h = 0.02, ks_v = 0.02, canopy = stype)
+        S = model.RTModel(surface=soil, canopy=can, models=models, theta=self.theta, freq=self.freq)
         S.sigma0()
 
         models = {'surface': 'Dubois95', 'canopy': stype}
         eps = 5. -3.j
 
-        S = model.SingleScatRT(surface=soil, canopy=can, models=models, theta=self.theta, freq=self.freq)
+        S = model.RTModel(surface=soil, canopy=can, models=models, theta=self.theta, freq=self.freq)
         S.sigma0()
 
     def test_scat_rayleigh(self):
@@ -60,12 +59,12 @@ class TestSingle(unittest.TestCase):
         ke = 0.05
         omega=0.5
         soil = Soil(eps=eps, f=5., s=0.02)
-        can = OneLayer(ke_h=ke, ke_v=ke, d=d, ks_h = omega*ke, ks_v = omega*ke)
-        S = model.SingleScatRT(surface=soil, canopy=can, models=models, theta=theta, freq=self.freq)
+        can = OneLayer(ke_h=ke, ke_v=ke, d=d, ks_h = omega*ke, ks_v = omega*ke, canopy = stype)
+        S = model.RTModel(surface=soil, canopy=can, models=models, theta=theta, freq=self.freq)
         S.sigma0()
 
         models = {'surface': 'Dubois95', 'canopy': stype}
-        S = model.SingleScatRT(surface=soil, canopy=can, models=models, theta=theta, freq=self.freq)
+        S = model.RTModel(surface=soil, canopy=can, models=models, theta=theta, freq=self.freq)
         S.sigma0()
 
         # compare results against results obtained through Eq. 11.23 (analytic way)
@@ -86,7 +85,7 @@ class TestSingle(unittest.TestCase):
 
         pol = 'hh'
         self.assertEqual(len(ref_hh), len(S.stot[pol]))
-        for i in xrange(len(ref_hh)):
+        for i in range(len(ref_hh)):
             #print np.rad2deg(theta[i]), ref_hh[i]
             if np.isnan(ref_hh[i]):
                 self.assertTrue(np.isnan(S.stot[pol][i]))
@@ -97,7 +96,7 @@ class TestSingle(unittest.TestCase):
 
                 # gcg
                 xx=3.*n*omega*ke*d*RHO_h[i]*trans[i]**2.
-                print np.rad2deg(theta[i]), S.s0gcg[pol][i],xx, S.s0gcg[pol][i]/xx
+                # print np.rad2deg(theta[i]), S.s0gcg[pol][i],xx, S.s0gcg[pol][i]/xx
                 self.assertAlmostEqual(S.s0cgt[pol][i],xx) 
 
 
@@ -107,7 +106,7 @@ class TestSingle(unittest.TestCase):
 
         pol = 'vv'
         self.assertEqual(len(ref_vv), len(S.stot[pol]))
-        for i in xrange(len(ref_vv)):
+        for i in range(len(ref_vv)):
             #print theta[i], ref_vv[i]
             if np.isnan(ref_vv[i]):
                 self.assertTrue(np.isnan(S.stot[pol][i]))

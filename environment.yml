@@ -15,4 +15,5 @@ dependencies:
   - future
   - numba
   - numpy
+  - anyio==3.*
 

@@ -1,5 +1,6 @@
 sphinxcontrib-bibtex
 pytest>=4.6
+anyio==3.*
 jupyter
 matplotlib
 scipy
@@ -11,3 +12,5 @@ nbsphinx
 ipykernel
 mistune
 nbconvert
+pytest
+pandoc

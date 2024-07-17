@@ -83,7 +83,7 @@ class RTModel(Model):
 
         for k in ['surface', 'canopy']:
             assert k in self.models.keys()  # check that all models have been specified
-        if self.surface.surface != 'WaterCloud':
+        if self.model.surface != 'WaterCloud':
             assert self.freq == self.surface.f, "Different frequencies in model and soil definition"
             # check that frequencies are the same!
 
@@ -622,8 +622,4 @@ class WaterCloudCanopy(object):
 
     def _tau(self, B):
         return np.exp(-2 * B / np.cos(self.theta) * self.V2)
-
-
-
-
 

@@ -17,13 +17,13 @@ class Test_IEM(unittest.TestCase):
         pass
     
     def test_init(self):
-        O = I2EM(self.f, self.eps, self.s, self.l, self.theta, auto=False)
-        self.assertEqual(O.eps, self.eps)
-        self.assertEqual(O.ks, O.k*O.sig)
-        self.assertEqual(O.kl, O.k*O.l)
+        model = I2EM(self.f, self.eps, self.s, self.l, self.theta, auto=False)
+        self.assertEqual(model.eps, self.eps)
+        self.assertEqual(model.ks, model.k*model.sig)
+        self.assertEqual(model.kl, model.k*model.l)
 
     def test_scat(self):
-        O = I2EM(self.f, self.eps, self.s, self.l, self.theta, auto=False)
+        model = I2EM(self.f, self.eps, self.s, self.l, self.theta, auto=False)
 
 if __name__ == '__main__':
     unittest.main()

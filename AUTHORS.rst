@@ -2,5 +2,5 @@ Developers
 ==========
 
 * Alexander Löw
-* Thomas Weiß <"weiss.thomas@lmu.de">
+* Thomas Weiß <"thomas.weiss@uni-rostock.de">
 

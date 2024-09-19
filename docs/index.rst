@@ -9,14 +9,14 @@ Content
 .. toctree::
     :maxdepth: 2
 
-    01_Introduction
-    02_Installation
-    03_Usage
-    04_Theory
-    annex_technical
-    authors
-    changes
-    License
+    01_Introduction.rst
+    02_Installation.rst
+    03_Usage.rst
+    04_Theory.rst
+    annex_technical.rst
+    authors.rst
+    changes.rst
+    License.rst
 
 Credits
 -------------

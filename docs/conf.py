@@ -44,7 +44,7 @@ sys.path.insert(0, _pysrc)
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.autosummary', 'sphinx.ext.viewcode', 'sphinx.ext.coverage',
               'sphinx.ext.doctest', 'sphinx.ext.ifconfig', 'sphinx.ext.mathjax',
-              'sphinx.ext.napoleon', 'sphinxcontrib.bibtex', 'nbsphinx']
+              'sphinx.ext.napoleon', 'sphinxcontrib.bibtex', 'myst_nb']
 
 # Add bibtex file
 bibtex_bibfiles = ['references.bib']
@@ -66,7 +66,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SenSE'
-copyright = u'2023, Thomas Weiß'
+copyright = u'2024, Thomas Weiß'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

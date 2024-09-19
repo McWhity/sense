@@ -2,13 +2,22 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    =
+
+# Options should be aligned with how the documentation is built on RTD
+# (except for '--keep-going', failing fast is prefered on local builds)
+# We also remove '-E' to reduce the time of rebuilding reference indexes
+# on each build.
+SPHINXOPTS    = -T -j auto -W
 SPHINXBUILD   = sphinx-build
 PAPER         =
-BUILDDIR      = _build
+PROJECT       ?= user
+BUILDDIR      = _build/$(PROJECT)
+
+# Do not use local Django settings during the docs build
+export DJANGO_SETTINGS_SKIP_LOCAL = True
 
 # User-friendly check for sphinx-build
-ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $?), 1)
+ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
 $(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you don't have Sphinx installed, grab it from http://sphinx-doc.org/)
 endif
 
@@ -49,10 +58,19 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 
+auto:
+	sphinx-autobuild --port 8888 $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	@echo
+	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+
+livehtml:
+	sphinx-autobuild --port 4444 -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
@@ -85,17 +103,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/sar-pre-processing.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/sdf.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/sar-pre-processing.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/sdf.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $HOME/.local/share/devhelp/sar-pre-processing"
-	@echo "# ln -s $(BUILDDIR)/devhelp $HOME/.local/share/devhelp/sar-pre-processing"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/sdf"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/sdf"
 	@echo "# devhelp"
 
 epub:

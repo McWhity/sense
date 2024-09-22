@@ -87,3 +87,4 @@ This project is licensed under the GPLv3 License - see the
    :target: https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest
 .. |License: GPL v3| image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
+

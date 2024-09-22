@@ -9,7 +9,7 @@ request <https://github.com/mcwhity/sense/issues/new>`__.
 Reporting bugs
 ~~~~~~~~~~~~~~
 
-If you find a bug in ``SenSE``, please open an new
+If you find a bug in SenSE, please open an new
 `issue <https://github.com/mcwhity/sense/issues/new>`__ and tag it
 “bug”.
 
@@ -24,7 +24,7 @@ tracker <https://github.com/mcwhity/sense/issues/new>`__ and tag it
 Testing
 ~~~~~~~
 
-The package is currently tested for Python >= 3.6 on Unix-like systems.
+The package is currently tested for Python >= 3.10 on Unix-like systems.
 To run unit tests, execute the following line from the root of the
 repository:
 

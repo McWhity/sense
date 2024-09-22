@@ -2,11 +2,22 @@
 
 Implemented microwave Radiative Transfer (RT) models
 ======================================================
-The backscattering signal of a ground pixel consists of surface scattering, volume scattering, or a combination of both
+The backscattering signal of a ground pixel consists of surface scattering, canopy scattering, or a combination of both
 :cite:`ulaby_microwave_2014`. Right now the implemented RT models focus on areas with open soil
-(surface-scattering RT models) and vegetated (surface+volume-scattering models) land surfaces.::
+(surface-scattering RT models) and vegetated (surface+canopy-scattering models) land surfaces.
+A schematic overview of considered scattering mechanism within the RT models is shown in :numref:`scattering_machanism`
 
-    tbd (add general information about RT)
+.. _scattering_machanism:
+.. figure:: images/scattering_mechanism_ulaby.jpeg
+   :align: center
+   :width: 80%
+
+An overview of the implemented surface and canopy RT models is given in :numref:`rt_model`
+.. _rt_model:
+.. figure:: images/rt_model.jpeg
+   :align: center
+   :width: 80%
+
 
 .. _surface:
 
@@ -158,10 +169,10 @@ and high surface roughness as Gaussian.
 
 where :math:`L` is the correlation length.
 
-Volume-scattering RT models
+Canopy-scattering RT models
 ----------------------------
 Due to many individual scatterers (leaves, needles, and branches) the vegetation canopy is usually described as a
-volume-scattering medium. Depending on parameters like radar wavelength or vegetation density the observed backscatter
+canopy-scattering medium. Depending on parameters like radar wavelength or vegetation density the observed backscatter
 includes scattering components from the soil surface as well as multiple scattering contributions from surface and
 canopy interactions.
 
@@ -175,7 +186,7 @@ to be a collection of spherical water droplets which are uniformely distributed.
 variables for the canopy layer are vegetation height and cloud density which are assumed to be proportional
 to the volumetric water content :cite:`attema_vegetation_1978`.
 
-Combining surface (\sigma_{s}^0) and volume (\sigma_{c}^0) scattering the WCM for for a given polarization
+Combining surface (\sigma_{s}^0) and canopy (\sigma_{c}^0) scattering the WCM for for a given polarization
 :math:`pq` (:math:`pq = HH`, :math:`VV`, or :math:`HV`) for vegetation areas is defined as
 
 .. math::
@@ -260,7 +271,7 @@ The direct canopy scattering :math:`\sigma_{c_{pq}}^0` is described by
 
 .. math:: \sigma_{c_{pq}}^0 = \frac{\sigma_{V_{pq}}^{back} \ cos\theta}{k_e^p + k_e^q} \ (1 - T_p T_q)
 
-with the volume backscattering coefficient :math:`\sigma_{V_{pq}}^{back}` of the vegetation medium
+with the canopy backscattering coefficient :math:`\sigma_{V_{pq}}^{back}` of the vegetation medium
 
 .. math:: \sigma_{V_{pq}}^{back} = N_v \  \sigma_{pq}^{back}
 
@@ -337,9 +348,14 @@ The simplistic approach by Dobson (Temperature T=23°C, bulk density :math:`\rho
    \epsilon_{w}^{''} = \frac{74.1 \ (f/f_0)}{1+(f/f_0)^2}+6.46 \ \frac{\sigma}{f}
    \end{aligned}
 
-with frequency :math:`f` (GHz) and :math:`f_0` = 18.64 GHz (relaxing frequency of water at 23°C)
+.. math::
 
-cite Ulaby ?????
+   \begin{aligned}
+   \epsilon_{w}^{'} &= 4.9 + \frac{74.1}{1+(f/f_0)^2} \\
+   \epsilon_{w}^{''} &= \frac{74.1 (f/f_0)}{1+(f/f_0)^2} + 6.46 \frac{\sigma}{f}
+   \end{aligned}
+
+with frequency :math:`f` (GHz) and :math:`f_0` = 18.64 GHz (relaxing frequency of water at 23°C).
 
 Dobson et al. (1985)
 ---------------------
@@ -358,7 +374,7 @@ single Debye dielectric model for pure water. Eqs. 4.14
 .. math::
 
    \begin{aligned}
-   \epsilon_{w}^' = \epsilon_{w\infty} + \frac{\epsilon_{w0} - \epsilon_{w\infty}}{1+(2\pi f\tau_w)^2} \\
+   \epsilon_{w}^{'} = \epsilon_{w\infty} + \frac{\epsilon_{w0} - \epsilon_{w\infty}}{1+(2\pi f\tau_w)^2} \\
    \epsilon_{w}^{''} = \frac{2\pi f\tau_w (\epsilon_{w0} - \epsilon_{w\infty})}{1 + (2\pi f\tau_w)^2}
    \end{aligned}
 
@@ -367,7 +383,7 @@ Debye model with conductivity term for e2. Eqs. 4.67
 .. math::
 
    \begin{aligned}
-   \epsilon_{w}^' = \epsilon_{w\infty} + \frac{\epsilon_{w0} - \epsilon_{w\infty}}{1+(2\pi f\tau_w)^2} \\
+   \epsilon_{w}^{'} = \epsilon_{w\infty} + \frac{\epsilon_{w0} - \epsilon_{w\infty}}{1+(2\pi f\tau_w)^2} \\
    \epsilon_{w}^{''} = \frac{2\pi f\tau_w (\epsilon_{w0} - \epsilon_{w\infty})}{1 + (2\pi f\tau_w)^2} + (\frac{2.65-\rho_b}{2.65m_v}) \frac{\sigma}{2\pi \epsilon_0 f}
    \end{aligned}
 
@@ -395,17 +411,6 @@ dielectic permittivity
    \end{aligned}
 
 
-pure water
-~~~~~~~~~~~
-xxx
-
-
-Implemented utility functions
-==============================
-tbd
-
-
-
 .. rubric:: References
 .. bibliography:: references.bib
-    :style: unsrt
+   :style: unsrt

@@ -5,19 +5,25 @@ Implemented microwave Radiative Transfer (RT) models
 The backscattering signal of a ground pixel consists of surface scattering, canopy scattering, or a combination of both
 :cite:`ulaby_microwave_2014`. Right now the implemented RT models focus on areas with open soil
 (surface-scattering RT models) and vegetated (surface+canopy-scattering models) land surfaces.
-A schematic overview of considered scattering mechanism within the RT models is shown in :numref:`scattering_machanism`
+A schematic overview of considered scattering mechanism within the RT models is shown in :numref:`scattering_machanism`.
+The Water Cloud Model (WCM) considers only :math:`\sigma_g^0` and :math:`\sigma_c^0`
+whereas the Single Scattering Radiative Transfer model considers all illustrated scattering mechanism.
 
 .. _scattering_machanism:
 .. figure:: images/scattering_mechanism_ulaby.jpeg
    :align: center
    :width: 80%
 
+   Schematic overview of scattering mechanism
+
 An overview of the implemented surface and canopy RT models is given in :numref:`rt_model`
+
 .. _rt_model:
 .. figure:: images/rt_model.jpeg
    :align: center
    :width: 80%
 
+   Schematic overview of currently implemented RT models
 
 .. _surface:
 
@@ -193,6 +199,7 @@ Combining surface (\sigma_{s}^0) and canopy (\sigma_{c}^0) scattering the WCM fo
 
    \label{eq:WCM}
    \sigma_{pq}^0 = \sigma_{c_{pq}}^0 + T^2\sigma_{s_{pq}}^0
+   \sigma_{g}_{qp} = T^2\sigma_{s_{pq}}^0
 
 where :math:`\sigma_{c_{pq}}^0` (direct canopy backscatter) and :math:`T_{pq}^2` (two-way attenuation by the canopy)
 are described as
@@ -344,7 +351,7 @@ The simplistic approach by Dobson (Temperature T=23°C, bulk density :math:`\rho
 .. math::
 
    \begin{aligned}
-   \epsilon_{w}^' = 4.9 + \frac{74.1}{1+(f/f_0)^2} \\
+   \epsilon_{w}^{'} = 4.9 + \frac{74.1}{1+(f/f_0)^2} \\
    \epsilon_{w}^{''} = \frac{74.1 \ (f/f_0)}{1+(f/f_0)^2}+6.46 \ \frac{\sigma}{f}
    \end{aligned}
 
@@ -406,7 +413,7 @@ dielectic permittivity
 .. math::
 
    \begin{aligned}
-   \epsilon_{soil}^' = [1 + 0.66 \rho_b + m_v^{\beta_1} (\epsilon_w^{'})^{\alpha} - m_v]^{1/\alpha} \\
+   \epsilon_{soil}^{'} = [1 + 0.66 \rho_b + m_v^{\beta_1} (\epsilon_w^{'})^{\alpha} - m_v]^{1/\alpha} \\
    \epsilon_{soil}^{''} = m_v^{\beta_2} \epsilon_w^{''}
    \end{aligned}
 

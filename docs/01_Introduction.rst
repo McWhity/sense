@@ -13,7 +13,3 @@ Getting Started
 Please find instructions on how to download and install SenSE in the :ref:`Installation` section.
 
 .. include:: text_blocks_README_RtD/support_contributing_testing.rst
-
-Include mentioning Alex
-~~~~~~~~~~~~~~~~~~~~~~~~
-tbd (move somewhere else)

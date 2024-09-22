@@ -199,7 +199,7 @@ Combining surface (\sigma_{s}^0) and canopy (\sigma_{c}^0) scattering the WCM fo
 
    \label{eq:WCM}
    \sigma_{pq}^0 = \sigma_{c_{pq}}^0 + T^2\sigma_{s_{pq}}^0
-   \sigma_{g}_{qp} = T^2\sigma_{s_{pq}}^0
+   \sigma_{g_{qp}} = T^2\sigma_{s_{pq}}^0
 
 where :math:`\sigma_{c_{pq}}^0` (direct canopy backscatter) and :math:`T_{pq}^2` (two-way attenuation by the canopy)
 are described as

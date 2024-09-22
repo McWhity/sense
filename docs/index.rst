@@ -24,9 +24,7 @@ The project leading to this application has received funding from the
 European Union’s Horizon 2020 research and innovation program
 under grant agreement No 687320.
 
-.. |buildstatus| image:: https://travis-ci.com/McWhity/sense.svg?branch=dev
-    :target: https://travis-ci.org/McWhity/sense
-
-.. |docstatus| image:: https://readthedocs.org/projects/McWhity/badge/?version=latest
-    :target: https://sense.readthedocs.io/en/dev/?badge=getting_to_release
-    :alt: Documentation Status
+.. |Build Status| image:: https://gitlab.uni-rostock.de/mcwhity/sense/badges/master/pipeline.svg
+   :target: https://gitlab.uni-rostock.de/mcwhity/sense
+.. |Documentation Status| image:: https://readthedocs.org/projects/sense-community-sar-scattering-model/badge/?version=latest
+   :target: https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest

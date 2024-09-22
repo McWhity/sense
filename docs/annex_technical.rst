@@ -38,7 +38,7 @@ Technical documentation
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: scatterer
+.. automodule:: sense.scatterer
     :members:
     :undoc-members:
     :show-inheritance:

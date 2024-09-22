@@ -8,7 +8,7 @@ on:
     paths:
       - 'README.rst'
 
-  jobs:
+jobs:
   create_pull_request:
     runs-on: ubuntu-latest
     steps:
@@ -17,11 +17,16 @@ on:
         with:
           ref: dev  # Checkout the dev branch
 
+      - name: Configure Git
+        run: |
+          git config user.name "Thomas Weiß"
+          git config user.email "thomas.weiss@uni-rostock.de"
+
       - name: Create new branch
         run: git checkout -b update-readme-${{ github.run_id }}
 
       - name: Install Pandoc
-        run: sudo apt-get install pandoc
+        run: sudo apt-get update && sudo apt-get install pandoc
 
       - name: Convert README.rst to README.md
         run: pandoc README.rst -f rst -t markdown -o README.md

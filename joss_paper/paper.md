@@ -17,7 +17,7 @@ affiliations:
    index: 2
  - name: Fraunhofer Institute for Computer Graphics Research IGD, Joachim-Junigus-Straße 11, 18059 Rostock, Germany
    index: 3
-date: 28 June 2023
+date: 19 September 2024
 bibliography: paper.bib
 ---
 
@@ -25,8 +25,8 @@ bibliography: paper.bib
 SenSE is a generic community framework for radiative transfer (RT) modelling in the active microwave domain.
 It implements different existing RT models for scattering and emission for different surfaces in a coherent framework
 to simulate SAR backscattering coefficients as function of surface biogeophysical parameters.
-Within the SenSE framework different RT model combination of surface and volume scatting models are brought together
-(modular design), thus surface and volume scattering models can be easily exchanged. The easy exchange and analysis 
+Within the SenSE framework different RT model combination of surface and canopy scatting models are brought together
+(modular design), thus surface and canopy scattering models can be easily exchanged. The easy exchange and analysis 
 of the different model combination within one framework can be seen as the biggest advantage of the developed 
 SenSE package. Currently implemented surface models are: Oh92 [@oh_empirical_1992], 
 Oh04 [@yisok_oh_quantitative_2004], Dubois95 [@dubois_measuring_1995] and IEM [@fung_backscattering_1992] 
@@ -44,11 +44,12 @@ Auflistung von allen RT modellen
 
 Surface-scattering RT models
 
-Volume-scattering RT models
+Canopy-scattering RT models
 
 Dielectric mixing models for soils
 
 # Statement of need
+<!-- Copy from documentation text block -->
 Over the last decades several different (empirical to physical based) RT models in the active microwave domain 
 were developed, tested and further modified. 
 But a easy usable framework combing the most common microwave RT models (simulating backscatter 
@@ -56,7 +57,7 @@ response of active microwave sensors) is missing.
 Thus, every researcher has to produce their own code implementation from the original source.
 This python framework shall serve as a first attempt to combine most common active microwave related RT
 models in a modular way.
-Thus, surface and volume scattering models can be easily exchanged by each other.
+Thus, surface and canopy scattering models can be easily exchanged by each other.
 Such a modular framework reveals an opportunity to easily plug and play with different RT model combinations for
 different research questions and use cases.
 SenSE, facilitates the application of RT models, especially for comparative analysis. 

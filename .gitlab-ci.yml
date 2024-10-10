@@ -1,6 +1,6 @@
 stages:
-  - documentation
   - test
+  - documentation
 
 variables:
   PYTHON_VERSION: "3.12"
@@ -29,3 +29,4 @@ test:
   only:
     - dev
     - master
+    - test_cidc

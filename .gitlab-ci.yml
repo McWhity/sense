@@ -3,7 +3,7 @@ stages:
   - test
 
 variables:
-  PYTHON_VERSION: "latest"
+  PYTHON_VERSION: "3.12"
 
 before_script:
   - apt-get update -qq

@@ -3,7 +3,7 @@
 SenSE: Community SAR ScattEring model
 =====================================
 
-sense-community-sar-scattering-model.readthedocs.io SenSE is a generic
+SenSE is a generic
 community framework for radiative transfer (RT) modelling in the active
 microwave domain. It implements different existing models for scattering
 and emission for different surfaces in a coherent framework to simulate
@@ -20,22 +20,6 @@ Currently implemented canopy models are: SSRT and Water Cloud.
 Statement of need
 -----------------
 .. include:: docs/text_blocks_README_RtD/statement_of_need.rst
-
-Content of this repository
---------------------------
-
-.. raw:: html
-
-   <!-- * `docs/` - The auto generated documentation
-   * `recipe/` Conda installation recipe
-   * `sar_pre_processing/` - The main sar pre processing software package
-   * `test/` - The test package.
-   * `AUTHORS.rst` - Author information.
-   * `CHANGES.md` - Package change log.
-   * `LICENSE.rst` - License of software in repository.
-   * `README.md` - Readme.
-   * `environmental.yml` - Requirements.
-   * `setup.py` - main build script, to be run with Python 3.6 -->
 
 Installation
 --------------
@@ -79,13 +63,9 @@ License
 This project is licensed under the GPLv3 License - see the
 `LICENSE.rst <LICENSE.rst>`__ file for details.
 
-.. raw:: html
-
 .. |Build Status| image:: https://gitlab.uni-rostock.de/mcwhity/sense/badges/master/pipeline.svg
    :target: https://gitlab.uni-rostock.de/mcwhity/sense
 .. |Documentation Status| image:: https://readthedocs.org/projects/sense-community-sar-scattering-model/badge/?version=latest
    :target: https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest
 .. |License: GPL v3| image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
-
-

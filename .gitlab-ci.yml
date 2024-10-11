@@ -1,5 +1,5 @@
 stages:
-  - documentation
+  # - documentation
   - test
 
 variables:

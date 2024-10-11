@@ -8,19 +8,19 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 SenSE: Community SAR ScattEring model
 =====================================
 
-sense-community-sar-scattering-model.readthedocs.io SenSE is a generic
-community framework for radiative transfer (RT) modelling in the active
-microwave domain. It implements different existing models for scattering
-and emission for different surfaces in a coherent framework to simulate
-SAR backscattering coefficients as function of surface biogeophysical
-parameters. In the microwave domain the surface and canopy contribution
-of the total backscatter is usually estimated separately. Within the
-SenSE framework different model combination of surface and canopy models
-can be easily brought together and moreover analyzed. The analysis of
-the different model combination within one framework can be seen as the
-biggest advantage of the developed SenSE package. Currently implemented
-surface models are: Oh1992, Oh2004, Dubois95 and IEM and Water Cloud.
-Currently implemented canopy models are: SSRT and Water Cloud.
+SenSE is a generic community framework for radiative transfer (RT)
+modelling in the active microwave domain. It implements different
+existing models for scattering and emission for different surfaces in a
+coherent framework to simulate SAR backscattering coefficients as
+function of surface biogeophysical parameters. In the microwave domain
+the surface and canopy contribution of the total backscatter is usually
+estimated separately. Within the SenSE framework different model
+combination of surface and canopy models can be easily brought together
+and moreover analyzed. The analysis of the different model combination
+within one framework can be seen as the biggest advantage of the
+developed SenSE package. Currently implemented surface models are:
+Oh1992, Oh2004, Dubois95 and IEM and Water Cloud. Currently implemented
+canopy models are: SSRT and Water Cloud.
 
 Statement of need
 -----------------
@@ -41,21 +41,6 @@ analysis. In time, the framework is expected to grow, thus including
 more and more RT models (e.g., passive microwave domain) and
 sublimentary functions (e.g., more dielectric mixing models).
 
-Content of this repository
---------------------------
-
-```{=html}
-<!-- * `docs/` - The auto generated documentation
-* `recipe/` Conda installation recipe
-* `sar_pre_processing/` - The main sar pre processing software package
-* `test/` - The test package.
-* `AUTHORS.rst` - Author information.
-* `CHANGES.md` - Package change log.
-* `LICENSE.rst` - License of software in repository.
-* `README.md` - Readme.
-* `environmental.yml` - Requirements.
-* `setup.py` - main build script, to be run with Python 3.6 -->
-```
 Installation
 ------------
 
@@ -128,9 +113,6 @@ generate the documentation of `SenSE` on
 Authors
 -------
 
-Developers
-==========
-
 -   Alexander Löw (✝ 2 July 2017)
 -   Thomas Weiß \<\"<thomas.weiss@uni-rostock.de%22>\>
 
@@ -139,6 +121,3 @@ License
 
 This project is licensed under the GPLv3 License - see the
 [LICENSE.rst](LICENSE.rst) file for details.
-
-```{=html}
-```

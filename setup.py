@@ -6,22 +6,17 @@ This file is part of SenSE.
 For COPYING and LICENSE details, please refer to the LICENSE file
 """
 
-from __future__ import absolute_import
-from __future__ import print_function
-
-from setuptools import setup
-from setuptools import find_packages
-
+from setuptools import setup, find_packages
 import io
+import os
+from os.path import dirname, join
 
-from os.path import dirname
-from os.path import join
-
-
+# Get the version from sense/version.py
 __version__ = None
 with open('sense/version.py') as f:
-    exec(f.read())
+    exec(f.read())  # Safely execute version.py to get __version__
 
+# Function to read files with UTF-8 encoding
 def read(*names, **kwargs):
     with io.open(
         join(dirname(__file__), *names),
@@ -29,20 +24,27 @@ def read(*names, **kwargs):
     ) as fh:
         return fh.read()
 
-with open('docs/requirements.txt') as ff:
-    required = ff.read().splitlines()
+# Get the absolute path of the current directory
+this_directory = os.path.abspath(os.path.dirname(__file__))
 
-setup(name='sense',
-      version=__version__,
-      description='SenSE - Community SAR ScattEring model ',
-      long_description=read('README.md'),
-      license='GNU license',
-      author='Thomas Weiß, Alexander Löw',
-      author_email='weiss.thomas@lmu.de',
-      url='https://github.com/McWhity/sense',
-      packages=['sense','sense.surface','sense.dielectric'],
-      install_requires=required,
-      package_data={},
-      include_package_data=True,
-      zip_safe=False,
+# Read the requirements from docs/requirements.txt
+with open(os.path.join(this_directory, 'docs/requirements.txt')) as f:
+    required = f.read().splitlines()
+
+# Setup configuration
+setup(
+    name='sense',
+    version=__version__,
+    description='SenSE - Community SAR ScattEring model',
+    long_description=read('README.md'),
+    long_description_content_type='text/markdown',
+    license='GNU license',
+    author='Thomas Weiß, Alexander Löw',
+    author_email='weiss.thomas@lmu.de',
+    url='https://github.com/McWhity/sense',
+    packages=find_packages(include=['sense', 'sense.surface', 'sense.dielectric']),
+    install_requires=required,
+    package_data={},
+    include_package_data=True,
+    zip_safe=False,
 )

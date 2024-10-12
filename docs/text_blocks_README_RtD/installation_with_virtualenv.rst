@@ -12,8 +12,8 @@ Create a virtual environment::
 
 To install SenSE into an existing Python environment, use::
 
-    python setup.py install
+    python -m pip install .
 
 To install for development, use::
 
-    python setup.py develop
+    python -m pip install --editable .

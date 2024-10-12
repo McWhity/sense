@@ -20,7 +20,7 @@ If you want to suggest a new feature or an improvement of a current
 feature, you can submit this on the `issue
 tracker <https://github.com/mcwhity/sense/issues/new>`__ and tag it
 “enhancement”.
-Or you can use the `discussions <https://github.com/McWhity/sense/discussions>`__
+Or you can use the `discussions <https://github.com/McWhity/sense/discussions>`__.
 
 Testing
 ~~~~~~~

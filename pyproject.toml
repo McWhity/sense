@@ -61,3 +61,7 @@ exclude = ["*.pyi"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

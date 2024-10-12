@@ -10,7 +10,7 @@ class Fresnel0(object):
         Parameters
         ----------
         e : complex
-            complex relative dielectric permitivity
+            complex relative dielectric permittivity
         """
         self.x = self._calc(e)
 
@@ -26,11 +26,11 @@ class Reflectivity(object):
     def __init__(self, eps, theta):
         """
         table 2.5 Ulaby (2014)
-        assumes specular surface
+        assume specular surface
         Parameters
         ----------
         eps : complex
-            relative dielectric permitivity
+            relative dielectric permittivity
         theta : float, ndarray
             incidence angle [rad]
             can be specified

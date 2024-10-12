@@ -69,7 +69,7 @@ This project is licensed under the GPLv3 License - see the
    :target: https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest
 .. |License: GPL v3| image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
-.. |Pytest| image:: https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml/badge.svg?branch=dev
+.. |Pytest| image:: https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml/badge.svg?branch=master
    :target: https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml
    :alt: Pytest
 .. |Discussions| image:: https://img.shields.io/static/v1?label=Discussions&message=Ask&color=blue&logo=github

@@ -22,17 +22,17 @@ bibliography: paper.bib
 ---
 
 # Summary
-<!-- Copy from documentation text block -->
+<!-- Copy from introduction text block -->
 SenSE is a comprehensive community framework designed for radiative transfer (RT) modeling in the active microwave domain.
-It summarizes Radiative Transfer (RT) models developed for the active microwave domain (SAR) to simulate backscatter responses from open soil and vegetated (mainly agriculture) land surfaces.
-This integration spans different models for scattering and emission across various surfaces, providing a cohesive operational structure.
+It summarizes various RT models developed for synthetic aperture radar (SAR) to simulate backscatter responses from open soil and vegetated land surfaces, primarily in agricultural settings.
+This integration encompasses different models for scattering and emission across various surfaces, providing a cohesive operational structure.
 
-The framework's modular design is one of its most significant advantages, allowing easy substitution and analysis of different surface and canopy scattering models within a single system.
-This flexibility facilitates the seamless exchange of models, enhancing the framework's adaptability and utility.
-Currently, the SenSE package includes several surface models such as Oh92 [@oh_empirical_1992], Oh04 [@yisok_oh_quantitative_2004], Dubois95 [@dubois_measuring_1995], IEM [@fung_backscattering_1992], and the surface component of the Water Cloud Model (WCM) [@attema_vegetation_1978].
+One of the framework's most significant advantages is its modular design, which allows for the easy substitution and analysis of different surface and canopy scattering models within a single system.
+This flexibility facilitates seamless model exchange, enhancing the framework's adaptability and utility.
+The SenSE package currently includes several surface models such as Oh92 [@oh_empirical_1992], Oh04 [@yisok_oh_quantitative_2004], Dubois95 [@dubois_measuring_1995], IEM [@fung_backscattering_1992], and the surface component of the Water Cloud Model (WCM) [@attema_vegetation_1978].
 For canopy modeling, it supports models like SSRT [@de_roo_semi-empirical_2001, @ulaby_microwave_2014] and WCM [@attema_vegetation_1978].
 
-Additionally, the framework incorporates the dielectric mixing model by Dobson et al. [@dobson_microwave_1985] in various versions for converting soil moisture content to a dielectric constant.
+Additionally, the framework incorporates the dielectric mixing model by Dobson et al. [@dobson_microwave_1985], available in various versions for converting soil moisture content to a dielectric constant.
 SenSE also includes essential utility functions, such as those for frequency-wavelength conversion and calculating Fresnel reflectivity coefficients, further enhancing its analytical capabilities.
 
 For more detailed information, users are directed to the ReadtheDocs documentation and the original sources of each model, ensuring comprehensive access to technical details and operational guidelines.
@@ -41,34 +41,27 @@ For more detailed information, users are directed to the ReadtheDocs documentati
 
 # Statement of need
 <!-- Copy from documentation text block -->
-Over the last decades several different (empirical to physical based) RT
-models in the active microwave domain were developed, tested and further
-modified. But a easy usable framework combing the most common microwave
-RT models (simulating backscatter response of active microwave sensors)
-is missing. Thus, every researcher has to produce their own code
-implementation from the original source. This python framework shall
-serve as a first attempt to combine most common active microwave related
-RT models in a modular way. Thus, surface and volume scattering models
-can be easily exchanged by each other. Such a modular framework reveals
-an opportunity to easily plug and play with different RT model
-combinations for different research questions and use cases. SenSE,
-facilitates the application of RT models, especially for comparative
-analysis. In time, the framework is expected to grow, thus including
-more and more RT models (e.g., passive microwave domain) and
-sublimentary functions (e.g., more dielectric mixing models).
+Over the last several decades, various (empirical to physically based) RT models in the active microwave domain have been developed, tested, and further modified.
+However, an easy-to-use framework combining the most common microwave RT models (simulating backscatter responses of active microwave sensors) is lacking.
+Thus, every researcher must produce their own code implementation from the original source.
+This Python framework aims to serve as a first attempt to combine the most common active microwave-related RT models in a modular way.
+As a result, surface and volume scattering models can be easily exchanged with one another.
+Such a modular framework provides an opportunity to easily plug and play with different RT model combinations for various research questions and use cases.
+SenSE facilitates the application of RT models, especially for comparative analysis.
+Over time, the framework is expected to grow, incorporating more RT models (e.g., passive microwave domain) and supplementary functions (e.g., more dielectric mixing models).
 
 # Applications
 The Python framework was employed within the EU-sponsored MULTIPLY Project (https://cordis.europa.eu/project/id/687320).
-Furthermore, the implementation of RT models in SenSE played a crucial role in the analysis conducted for several publications [@weis_evaluation_2020;@weis_sentinel-1_2021;@weis_rtm-based_2024].
-Additionally, functionalities of SenSE are planned to be utilized in Project 2 - Remote Sensing of Vegetation Canopy Properties: States & Spatio-temporal Dynamics - of the Land Atmosphere Feedback Initiative (LAFI) (https://www.lafi-dfg.de/p-2).
+Furthermore, the implementation of RT models in SenSE played a crucial role in the analysis conducted for several publications [@weis_evaluation_2020; @weis_sentinel-1_2021; @weis_rtm-based_2024].
+Additionally, the functionalities of SenSE are planned to be utilized in Project 2 - Remote Sensing of Vegetation Canopy Properties: States & Spatio-temporal Dynamics of the Land Atmosphere Feedback Initiative (LAFI) (https://www.lafi-dfg.de/p-2).
 Further collaboration with researchers in the field of vegetation optical depths in forest areas is ongoing.
-Consequently, the functionality of SenSE will continue to be used, and further extensions of SenSE are to be expected.
+Consequently, the functionality of SenSE will continue to be used, and further extensions of SenSE are anticipated.
 
 # Other available software scripts (Ulaby and Long code library)
 Ulaby and Long [@ulaby_microwave_2014] authored an extensive book on the fundamentals of microwave remote sensing, including a wealth of MATLAB codes for demonstration purposes.
-However, these MATLAB codes consist of individual snippets from different RT models, making it challenging to interchange combinations of RT models.
+However, these MATLAB codes consist of individual snippets from different RT models, which makes it challenging to interchange combinations of RT models.
 While the interactive version of the MATLAB codes is effective for demonstration, it does not support processing large datasets.
-The limitations of the MATLAB approach are addressed in SenSE through practical examples provided in various Jupyter notebooks.
+SenSE addresses the limitations of the MATLAB approach through practical examples provided in various Jupyter notebooks.
 
 # Acknowledgements
 

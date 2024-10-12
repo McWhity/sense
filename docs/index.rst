@@ -2,7 +2,7 @@ SenSE: Community SAR ScattEring model
 ======================================
 
 ..
-    |buildstatus| |docstatus|
+    |docstatus|
 
 Content
 ---------
@@ -31,11 +31,6 @@ Credits
 The project leading to this application has received funding from the
 European Union’s Horizon 2020 research and innovation program
 under grant agreement No 687320.
-
-..
-    .. |buildstatus| image:: https://gitlab.uni-rostock.de/mcwhity/sense/badges/master/pipeline.svg
-    :target: https://gitlab.uni-rostock.de/mcwhity/sense
-    :alt: Build Status
 
 ..
     .. |docstatus| image:: https://readthedocs.org/projects/sense-community-sar-scattering-model/badge/?version=latest

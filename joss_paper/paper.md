@@ -22,8 +22,9 @@ bibliography: paper.bib
 ---
 
 # Summary
+<!-- Copy from documentation text block -->
 SenSE is a comprehensive community framework designed for radiative transfer (RT) modeling in the active microwave domain.
-It incorporates various existing RT models to simulate SAR backscattering coefficients based on surface biogeophysical parameters.
+It summarizes Radiative Transfer (RT) models developed for the active microwave domain (SAR) to simulate backscatter responses from open soil and vegetated (mainly agriculture) land surfaces.
 This integration spans different models for scattering and emission across various surfaces, providing a cohesive operational structure.
 
 The framework's modular design is one of its most significant advantages, allowing easy substitution and analysis of different surface and canopy scattering models within a single system.

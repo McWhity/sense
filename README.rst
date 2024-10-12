@@ -1,4 +1,4 @@
-|Build Status| |Documentation Status| |License: GPL v3|
+|Build Status| |Pytest| |Documentation Status| |License: GPL v3|
 
 SenSE: Community SAR ScattEring model
 =====================================
@@ -69,3 +69,6 @@ This project is licensed under the GPLv3 License - see the
    :target: https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest
 .. |License: GPL v3| image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
+.. |Pytest| image:: https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml/badge.svg?branch=dev
+   :target: https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml
+   :alt: Pytest

@@ -1,12 +1,12 @@
 [![Build
 Status](https://gitlab.uni-rostock.de/mcwhity/sense/badges/master/pipeline.svg)](https://gitlab.uni-rostock.de/mcwhity/sense)
+[![Pytest](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml/badge.svg?branch=dev)](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml)
 [![Documentation
 Status](https://readthedocs.org/projects/sense-community-sar-scattering-model/badge/?version=latest)](https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-SenSE: Community SAR ScattEring model
-=====================================
+# SenSE: Community SAR ScattEring model
 
 SenSE is a generic community framework for radiative transfer (RT)
 modelling in the active microwave domain. It implements different
@@ -22,8 +22,7 @@ developed SenSE package. Currently implemented surface models are:
 Oh1992, Oh2004, Dubois95 and IEM and Water Cloud. Currently implemented
 canopy models are: SSRT and Water Cloud.
 
-Statement of need
------------------
+## Statement of need
 
 Over the last decades several different (empirical to physical based) RT
 models in the active microwave domain were developed, tested and further
@@ -41,8 +40,7 @@ analysis. In time, the framework is expected to grow, thus including
 more and more RT models (e.g., passive microwave domain) and
 sublimentary functions (e.g., more dielectric mixing models).
 
-Installation
-------------
+## Installation
 
 ### Installation with Conda
 
@@ -97,27 +95,23 @@ SenSE can also be run using Docker. To build it locally use :
     cd sense
     docker build -t sense:latest . 
 
-Usage
------
+## Usage
 
 For usage checkout the [juypter
 notebook](https://nbviewer.jupyter.org/github/mcwhity/sense/tree/master/docs/notebooks/)
 
-Documentation
--------------
+## Documentation
 
 We use [Sphinx](http://www.sphinx-doc.org/en/stable/rest.html) to
 generate the documentation of `SenSE` on
 [ReadTheDocs](https://sense-community-sar-scattering-model.readthedocs.io/en/latest/).
 
-Authors
--------
+## Authors
 
 -   Alexander Löw (✝ 2 July 2017)
--   Thomas Weiß \<\"<thomas.weiss@uni-rostock.de%22>\>
+-   Thomas Weiß \<\"<thomas.weiss@uni-rostock.de>\"\>
 
-License
--------
+## License
 
 This project is licensed under the GPLv3 License - see the
 [LICENSE.rst](LICENSE.rst) file for details.

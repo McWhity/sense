@@ -1,10 +1,8 @@
 """
-This module implements a Water Cloud Model after ????
-
+This module implements a Water Cloud Model after Attema and Ulaby 1978
 References
 -----------
-????
-
+Attema and Ulaby (1978): Vegetation modeled as a water cloud. Radio Science. 13(2). 357–364
 """
 
 import numpy as np
@@ -17,14 +15,14 @@ class WaterCloudSurface(SurfaceScatter):
         """
         Parameters
         ----------
-        mv : ???
-            soil moisture
+        mv : float, ndarray
+            soil moisture [m³/m³]
         theta : float, ndarray
             incidence angle [rad]
         C : float
-            empirical parameter (surface related? need to be checked)
+            empirical parameter
         D : float
-            empirical parameter (check relation)
+            empirical parameter
         """
         super(WaterCloudSurface, self).__init__(mv=mv, theta=theta, C_hh=C_hh, C_vv=C_vv, C_hv=C_hv, D_hh=D_hh, D_vv=D_vv, D_hv=D_hv)
 

@@ -12,8 +12,15 @@ class Dubois95(SurfaceScatter):
         """
         Parameters
         ----------
+        eps : complex
+            relative dielectric permitivity
+        ks : float
+            product of wavenumber and rms height
+            be aware that both need to have the same units
+        theta : float
+            incidence angle in [rad]
         lam : float
-            wavelength in meter
+            wavelength [m]
         """
 
         super(Dubois95, self).__init__(eps, ks, theta)
@@ -53,7 +60,7 @@ class Dubois95(SurfaceScatter):
         t = np.rad2deg(self.theta)
         ax.plot(t, 10.*np.log10(self.hh), color='blue', label='hh')
         ax.plot(t, 10.*np.log10(self.vv), color='red', label='vv')
-       # ax.plot(t, 10.*np.log10(self.hv), color='green', label='hv')
+        # ax.plot(t, 10.*np.log10(self.hv), color='green', label='hv')
         ax.grid()
         ax.set_ylim(-35.,-5.)
         ax.set_xlim(30.,70.)

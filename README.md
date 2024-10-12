@@ -1,10 +1,9 @@
-[![Build
-Status](https://gitlab.uni-rostock.de/mcwhity/sense/badges/master/pipeline.svg)](https://gitlab.uni-rostock.de/mcwhity/sense)
 [![Pytest](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml/badge.svg?branch=dev)](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml)
 [![Documentation
 Status](https://readthedocs.org/projects/sense-community-sar-scattering-model/badge/?version=latest)](https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Discussions](https://img.shields.io/static/v1?label=Discussions&message=Ask&color=blue&logo=github)](https://github.com/mcwhity/sense/discussions)
 
 # SenSE: Community SAR ScattEring model
 

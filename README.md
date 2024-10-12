@@ -1,4 +1,4 @@
-[![Pytest](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml/badge.svg?branch=dev)](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml)
+[![Pytest](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml/badge.svg?branch=master)](https://github.com/mcwhity/sense/actions/workflows/test_build_pytest.yml)
 [![Documentation
 Status](https://readthedocs.org/projects/sense-community-sar-scattering-model/badge/?version=latest)](https://sense-community-sar-scattering-model.readthedocs.io/en/latest/?badge=latest)
 [![License: GPL

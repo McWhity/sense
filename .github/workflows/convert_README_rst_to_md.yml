@@ -23,10 +23,15 @@ jobs:
       - name: Commit changes
         run: |
           git add README.md
-          git commit -m "Convert README.rst to README.md"
+          git commit -m "Convert README.rst to README.md" || echo "No changes to commit"
 
-      # Use GITHUB_TOKEN to push changes directly to the current branch
+      - name: Check for README.md changes
+        id: check_readme
+        run: |
+          git diff --name-only | grep 'README.md' && echo "::set-output name=README_changed::true" || echo "::set-output name=README_changed::false"
+
       - name: Push changes
+        if: steps.check_readme.outputs.README_changed == 'true'
         run: git push origin HEAD
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses the default GitHub Actions token

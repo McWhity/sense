@@ -7,7 +7,7 @@ tags:
 authors:
   - name: Thomas Weiß
     orcid: 0000-0001-5278-8379
-    affiliation: 1,2,3
+    affiliation: "1,2,3"
   - name: Alexander Löw
     affiliation: 1
 affiliations:

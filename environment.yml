@@ -7,13 +7,8 @@ channels:
 
 dependencies:
   - python>=3.10*
-  - sphinxcontrib-bibtex>=0.4 # docs
-  - pytest>=4.6 # testing
-  - jupyter
-  - matplotlib
+  - matplotlib-base
   - scipy
-  - future
   - numba
   - numpy
-  - anyio==3.*
 

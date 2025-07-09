@@ -1,6 +1,4 @@
-"""
-Specification of canopies
-"""
+"""Specification of canopies."""
 
 class Canopy(object):
     def __init__(self, **kwargs):
@@ -13,8 +11,8 @@ class Canopy(object):
 
 
 class OneLayer(Canopy):
-    """
-    define a homogeneous one layer canopy
+    """define a homogeneous one layer canopy.
+
     water_cloud and turbid_isotropic/turbid_rayleigh
     """
     def __init__(self, **kwargs):

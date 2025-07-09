@@ -1,25 +1,20 @@
-"""
-This module implements the Oh et al. (1992)
-empirical surface backscattering model as documented
-in Ulaby et al (2014), chapter 10.5
 
-References
-----------
-Oh et al. (1992): An empirical model and an inversion technique for radar scattering from bare soil surfaces. IEEE TGRS 30(2). 370-381.
-"""
-
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from . scatter import SurfaceScatter
-from .. core import Fresnel0
-from .. core import Reflectivity
+from ..core import Fresnel0, Reflectivity
+from .scatter import SurfaceScatter
+
 
 class Oh92(SurfaceScatter):
+    """Oh et al. (1992) empirical surface backscattering model.
+
+    After Ulaby et al (2014), chapter 10.5
+    """
+
     def __init__(self, eps, ks, theta):
-        """
-        Parameters
-        ----------
+        """Parameters.
+
         eps : complex
             relative dielectric permitivity
         ks : float

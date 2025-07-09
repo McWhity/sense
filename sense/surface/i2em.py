@@ -1,30 +1,20 @@
-"""
-implements the I2EM model (see Ulaby (2014), Chapter 10
-backscattering model for single scale random surfaces
 
-
-The code originates from ideas obtained from the supplement
-of Ulaby et al (2014)
-"""
-from . scatter import SurfaceScatter
-import numpy as np
-
-from .. util import f2lam
-from .. core import Reflectivity
 import math
 
+import numpy as np
+from numba import jit
 from scipy.integrate import dblquad
 
-from numba import jit
+from ..core import Reflectivity
+from ..util import f2lam
+from .scatter import SurfaceScatter
 
-import pdb
 
 @jit(cache=True,nopython=True)
 def _calc_roughness_spectra_matrix(nx, ny, kl2, nspec, s, acf_type_id):
-    """
-    calculate roughness spectra
-    needs to return a matrix for further use
-    in crosspol calculations
+    """Calculate roughness spectra.
+
+    needs to return a matrix for further use in crosspol calculations.
     """
     if acf_type_id == 1:  # gauss
         wm = _calc_wm_matrix_gauss(nx, ny, nspec, kl2, s)
@@ -34,18 +24,20 @@ def _calc_roughness_spectra_matrix(nx, ny, kl2, nspec, s, acf_type_id):
         wm = _calc_wm_matrix_exp(nx, ny, nspec, kl2, s)
         wn = _calc_wn_matrix_exp(nx, ny, nspec, kl2, s)
     else:
-        assert False
+        raise AssertionError()
     return wn, wm
 
 
-
-
-
 class I2EM(SurfaceScatter):
-    def __init__(self, f, eps, sig, l, theta, **kwargs):
-        """
+    """I2EM model (see Ulaby (2014), Chapter 10).
 
-        BACKSCATTERING MODEL
+    I2EM backscattering model for single scale random surfaces.
+    The code originates from ideas obtained from the supplement
+    of Ulaby et al (2014)
+    """
+
+    def __init__(self, f, eps, sig, l, theta, **kwargs):
+        """BACKSCATTERING MODEL.
 
         Parameters
         ----------
@@ -70,7 +62,6 @@ class I2EM(SurfaceScatter):
             perform cross-pol calculations if possible
             might be slow in case of I2EM usage
         """
-
         self.freq = f
         lam = f2lam(self.freq)
         k = 2.*np.pi/lam
@@ -102,9 +93,7 @@ class I2EM(SurfaceScatter):
 
 
     def init_model(self):
-        """
-        initialize model for calculations
-        """
+        """Initialize model for calculations."""
         self.niter = self._estimate_itterations()
 
         # determine number of spectral components for cross-pol calculations
@@ -126,23 +115,20 @@ class I2EM(SurfaceScatter):
 
 
     def _estimate_itterations(self):
-        """
-        estimate the number of necessary itterations for
-        the integral calculations
-        """
-
+        """Estimate the number of necessary iterations for the integral calculations."""
         err = 1.E8
         Ts = 1
         while err > 1.0e-8:
             Ts += 1
-            err = ((self._ks2 *(np.mean(self._cs) + np.mean(self._css))**2 )**Ts) / math.factorial(Ts)
+            err = ((self._ks2 * (np.mean(self._cs) + np.mean(self._css))**2) ** Ts
+                ) / math.factorial(Ts)
             # err = ((self._ks2 *(self._cs + self._css)**2 )**Ts) / math.factorial(Ts)
-            # pdb.set_trace()
+
         return Ts
 
 
     def _init_hlp(self):
-        """ initiate help variables """
+        """Initiate help variables."""
         self._ks2 = self.ks**2.
         self._cs = np.cos(self.theta)
         self._cs2 = self._cs**2.
@@ -206,20 +192,15 @@ class I2EM(SurfaceScatter):
             if self.xpol:
                 self.hv = self._i2em_cross()
 
-
     def _i2em_bistatic(self):
-        """
-        calculate sigma for the co-pol case
-        backscatter geometr
-        calculate sigma for the co-pol case
-        backscatter geometry
+        """Calculate sigma for the co-pol case backscatter geometry.
 
         module 10.1
         """
-
         # calculate the integral
         idx = np.arange(self.niter)+1
-        # self.fac = map(math.factorial, idx)  # factorial for all N itterations; this is stored as it is needed multipole times
+        # self.fac = map(math.factorial, idx)  # factorial for all N itterations;
+        # this is stored as it is needed multipole times
         self.fac = [math.factorial(x) for x in idx]
 
         self.wn, self.rss = self.calc_roughness_spectrum(acf_type=self.acf_type)
@@ -251,11 +232,11 @@ class I2EM(SurfaceScatter):
 
         return svh*Shdw
 
-
     def _integrate_xpol(self, rvh):
-        """
-        integrate for X-pol
-        dblquad(@(r,phi)xpol_integralfunc(r, phi, sp,xx, ks2, cs,s, kl2, L, er, rss, rvh, n_spec), 0.1, 1, 0, pi)
+        """Integrate for X-pol.
+
+        dblquad(@(r,phi)xpol_integralfunc(r, phi, sp,xx, ks2, cs,s, kl2, L, er, rss, rvh, n_spec
+                ), 0.1, 1, 0, pi).
 
         the original matlab routines integrates
         xpol_integral(r,phi)
@@ -265,28 +246,37 @@ class I2EM(SurfaceScatter):
         when using python, x and y are reversed, however
         this does not matter unless the bounds are specified in the right order
         """
-        ans, err = dblquad(self._xpol_integralfunc, 0.1, 1., lambda x : 0., lambda x : 1., args=[[rvh,self.eps, self._ks2, self._cs2, self.rss, self._cs, self._fac, self._kl2, self._s, self._get_acf_id()]])
+        ans, err = dblquad(
+            self._xpol_integralfunc, 0.1, 1., lambda x: 0., lambda x: 1.,
+            args=[[
+                rvh,
+                self.eps,
+                self._ks2,
+                self._cs2,
+                self.rss,
+                self._cs,
+                self._fac,
+                self._kl2,
+                self._s,
+                self._get_acf_id()
+            ]]
+        )
         return ans
-
-
 
     def _get_acf_id(self):
         if self.acf_type == 'gauss':
             return 1
         if self.acf_type == 'exp15':
             return 2
-        assert False, 'Unknown ACF type'
+        raise AssertionError('Unknown ACF type')
 
 
     #@jit(cache=True)
     def _xpol_integralfunc(self, r, phi, *args):
-        """
-        while the original matlab function
-        returns a vector, this function
-        returns a scalar, as the dblquad function
-        in python requires so
-        """
+        """While the original matlab function returns a vector, this function returns a scalar.
 
+        dblquad function in python requires a scalar.
+        """
         rvh = args[0][0]
         eps = args[0][1]
         ks2 = args[0][2]
@@ -339,31 +329,11 @@ class I2EM(SurfaceScatter):
         acc = np.exp(-2.* ks2 *cs2) /(16. * np.pi)
         VH = 4. * acc * Fvh * vhmnsum * r
         y = VH * sha
-        # print('y =',y)
-        # print('r =',r)
-        # print('phi =',phi)
-        # print('sp = 1, exp15')
-        # print('xx =  ??? 1')
-        # print('ks2 =',ks2)
-        # print('cs =',cs)
-        # print('s =',s)
-        # print('kl2 =',kl2)
-        # print('L =', self.l)
-        # print('er =',eps)
-        # print('rss =',rss)
-        # print('rvh =',rvh)
-        # print('n_spec =',nspec)
-        # print(y)
-        # pdb.set_trace()
+
         return y
 
-
-
-
     def _calc_shadow_cross(self):
-        """"
-        calculating shadow consideration in single scat (Smith, 1967)
-        """
+        """"calculating shadow consideration in single scat (Smith, 1967)."""
         ct = np.cos(self.theta)/np.sin(self.theta)
         farg = ct /np.sqrt(2.) /self.rss
         gamma = 0.5 *(np.exp(-farg**2.) / 1.772 / farg - math.erfc(farg))
@@ -371,7 +341,8 @@ class I2EM(SurfaceScatter):
 
     def _calc_shadowing(self):
 
-        if self.mode == 'backscatter':    #todo comparison with binary variable instead of string to be faster ??
+        if self.mode == 'backscatter':
+            #todo comparison with binary variable instead of string to be faster ??
 
             ct = np.cos(self.theta)/np.sin(self.theta)
             cts = np.cos(self.thetas)/np.sin(self.thetas)
@@ -388,19 +359,37 @@ class I2EM(SurfaceScatter):
         return ShdwS
 
     def calc_roughness_spectrum(self, acf_type=None):
-        """
-        calculate roughness spectrum
-        Return wn as an array
+        """Calculate roughness spectrum.
+
+        Return wn as an array.
         """
         assert 'Validate with code again'
         if acf_type == 'gauss':
             # gaussian autocorrelation function
-            S = GaussianSpectrum(niter=self.niter, l=self.l, theta=self.theta, thetas=self.thetas, phi=self.phi,phis=self.phis, freq=self.freq, sig=self.sig)
+            S = GaussianSpectrum(
+                niter=self.niter,
+                l=self.l,
+                theta=self.theta,
+                thetas=self.thetas,
+                phi=self.phi,
+                phis=self.phis,
+                freq=self.freq,
+                sig=self.sig
+            )
         elif acf_type == 'exp15':
             # 1.5 power exponential function
-            S = ExponentialSpectrum(niter=self.niter, l=self.l, theta=self.theta, thetas=self.thetas, phi=self.phi,phis=self.phis, freq=self.freq, sig=self.sig)
+            S = ExponentialSpectrum(
+                niter=self.niter,
+                l=self.l,
+                theta=self.theta,
+                thetas=self.thetas,
+                phi=self.phi,
+                phis=self.phis,
+                freq=self.freq,
+                sig=self.sig
+            )
         else:
-            assert False, 'Invalid surface roughness spectrum: ' + str(acf_type)
+            raise AssertionError('Invalid surface roughness spectrum: ' + str(acf_type))
 
         return S.wn()  # returns wn as an array with length NITER
 
@@ -427,25 +416,54 @@ class I2EM(SurfaceScatter):
         # pdb.set_trace()
         # Ipp
         Ivv = fvv*h1
-        Ivv += 0.25*(Fvvupi *(self._ksz-qi)**(n-1) *np.exp(-self.sig**2. *(qi**2. - qi*(self._ksz-self._kz))))
-        Ivv += 0.25*(Fvvdni *(self._ksz+qi)**(n-1) *np.exp(-self.sig**2. *(qi**2. + qi*(self._ksz-self._kz))))
-        Ivv += 0.25*(Fvvups *(self._kz +qs)**(n-1) *np.exp(-self.sig**2. *(qs**2. - qs*(self._ksz-self._kz))))
-        Ivv += 0.25*(Fvvdns *(self._kz -qs)**(n-1) *np.exp(-self.sig**2. *(qs**2. + qs*(self._ksz-self._kz))))
+        Ivv += 0.25 * (
+            Fvvupi * (self._ksz - qi) ** (n - 1) *
+            np.exp(-self.sig**2 * (qi**2 - qi * (self._ksz - self._kz)))
+        )
+        Ivv += 0.25 * (
+            Fvvdni * (self._ksz + qi) ** (n - 1) *
+            np.exp(-self.sig**2. * (qi**2. + qi * (self._ksz - self._kz)))
+        )
+        Ivv += 0.25 * (
+            Fvvups * (self._kz + qs) ** (n - 1) *
+            np.exp(-self.sig**2. * (qs**2. - qs * (self._ksz - self._kz)))
+        )
+        Ivv += 0.25 * (
+            Fvvdns * (self._kz -qs)**(n-1) *
+            np.exp(-self.sig**2. * (qs**2. + qs*(self._ksz - self._kz)))
+        )
 
         Ihh = fhh*h1
-        Ihh += 0.25*(Fhhupi *(self._ksz-qi)**(n-1) *np.exp(-self.sig**2. *(qi**2. - qi*(self._ksz-self._kz))))
-        Ihh += 0.25*(Fhhdni *(self._ksz+qi)**(n-1) *np.exp(-self.sig**2. *(qi**2. + qi*(self._ksz-self._kz))))
-        Ihh += 0.25*(Fhhups *(self._kz +qs)**(n-1) *np.exp(-self.sig**2. *(qs**2. - qs*(self._ksz-self._kz))))
-        Ihh += 0.25*(Fhhdns *(self._kz -qs)**(n-1) *np.exp(-self.sig**2. *(qs**2. + qs*(self._ksz-self._kz))))
+        Ihh += 0.25 * (
+            Fhhupi * (self._ksz-qi) ** (n - 1) *
+            np.exp(-self.sig**2. * (qi**2. - qi * (self._ksz - self._kz)))
+        )
+        Ihh += 0.25 * (
+            Fhhdni * (self._ksz + qi) ** (n - 1) *
+            np.exp(-self.sig**2. * (qi**2. + qi * (self._ksz - self._kz)))
+        )
+        Ihh += 0.25 * (
+            Fhhups * (self._kz + qs) ** (n - 1) *
+            np.exp(-self.sig**2. * (qs**2. - qs * (self._ksz - self._kz)))
+        )
+        Ihh += 0.25 * (
+            Fhhdns * (self._kz - qs) ** (n - 1) *
+            np.exp(-self.sig**2. * (qs**2. + qs * (self._ksz - self._kz)))
+        )
 
         return Ivv, Ihh
 
     def calc_fpp(self, Rvi, Rhi):
 
         Rvt, Rht = self.calc_reflection_coefficients(Rvi, Rhi)
-
-        fvv =  2. * Rvt *(self._s * self._ss - (1. + self._cs * self._css) * self._cfs)/(self._cs + self._css)
-        fhh = -2. * Rht *(self._s * self._ss - (1. + self._cs * self._css) * self._cfs)/(self._cs + self._css)
+        fvv = 2. * Rvt * (
+            (self._s * self._ss - (1. + self._cs * self._css) * self._cfs)
+            / (self._cs + self._css)
+        )
+        fhh = -2. * Rht * (
+            (self._s * self._ss - (1. + self._cs * self._css) * self._cfs)
+            / (self._cs + self._css)
+        )
         return fvv, fhh
 
 
@@ -456,39 +474,116 @@ class I2EM(SurfaceScatter):
         # set coefficients
         if i_s == 1:
             Gqi = u_d * self._kz
-            Gqti = u_d * self.k *np.sqrt(self.eps-self._s**2.);
+            Gqti = u_d * self.k *np.sqrt(self.eps-self._s**2.)
             qi = u_d * self._kz
             c11 = self.k * self._cfs *(self._ksz - qi)
-            c21 = self._cs *(self._cfs *(self.k**2 *self._s*self._cf*(self._ss *self._cfs - self._s * self._cf) + Gqi*(self.k * self._css - qi))+ self.k**2. *self._cf * self._s *self._ss *self._sfs**2.)
 
-            c31 = self.k*self._s*(self._s*self._cf*self._cfs*(self.k*self._css-qi) - Gqi*(self._cfs*(self._ss*self._cfs -self._s*self._cf)+ self._ss *self._sfs**2.))
-            c41 = self.k *self._cs*(self._cfs*self._css*(self.k*self._css - qi) + self.k *self._ss*(self._ss*self._cfs-self._s*self._cf))
-            c51 = Gqi*(self._cfs *self._css*(qi-self.k*self._css) - self.k *self._ss*(self._ss*self._cfs-self._s*self._cf))
-            c12 = self.k * self._cfs *(self._ksz - qi)
+            c21 = self._cs * (
+                self._cfs * (
+                    self.k**2 * self._s * self._cf * (self._ss * self._cfs - self._s * self._cf)
+                    + Gqi * (self.k * self._css - qi)
+                ) + self.k**2 * self._cf * self._s * self._ss * self._sfs**2
+            )
 
-            c22 = self._cs *(self._cfs *(self.k**2. *self._s*self._cf*(self._ss *self._cfs - self._s * self._cf) + Gqti*(self.k * self._css - qi)) + self.k**2. *self._cf * self._s *self._ss *self._sfs**2.)
-            c32 = self.k*self._s*(self._s*self._cf*self._cfs*(self.k*self._css-qi) - Gqti*(self._cfs*(self._ss*self._cfs -self._s*self._cf)- self._ss *self._sfs**2.))
+            c31 = self.k * self._s * (
+                self._s * self._cf * self._cfs * (self.k * self._css - qi)
+                - Gqi * (
+                    self._cfs * (self._ss * self._cfs - self._s * self._cf)
+                    + self._ss * self._sfs**2
+                )
+            )
 
-            c42 = self.k *self._cs*(self._cfs*self._css*(self.k*self._css - qi) + self.k *self._ss*(self._ss*self._cfs-self._s*self._cf))
+            c41 = self.k * self._cs * (
+                self._cfs * self._css * (self.k * self._css - qi)
+                + self.k * self._ss * (self._ss * self._cfs - self._s * self._cf)
+            )
 
-            c52 = Gqti*(self._cfs *self._css*(qi-self.k*self._css) - self.k *self._ss*(self._ss*self._cfs-self._s*self._cf))
+            c51 = Gqi * (
+                self._cfs * self._css * (qi - self.k * self._css)
+                - self.k * self._ss * (self._ss * self._cfs - self._s * self._cf)
+            )
+
+            c12 = self.k * self._cfs * (self._ksz - qi)
+
+            c22 = self._cs * (
+                self._cfs * (
+                    self.k**2 * self._s * self._cf * (self._ss * self._cfs - self._s * self._cf)
+                    + Gqti * (self.k * self._css - qi)
+                ) + self.k**2 * self._cf * self._s * self._ss * self._sfs**2
+            )
+
+            c32 = self.k * self._s * (
+                self._s * self._cf * self._cfs * (self.k * self._css - qi)
+                - Gqti * (
+                    self._cfs * (self._ss * self._cfs - self._s * self._cf)
+                    - self._ss * self._sfs**2
+                )
+            )
+
+            c42 = self.k * self._cs * (
+                self._cfs * self._css * (self.k * self._css - qi)
+                + self.k * self._ss * (self._ss * self._cfs - self._s * self._cf)
+            )
+
+            c52 = Gqti * (
+                self._cfs * self._css * (qi - self.k * self._css)
+                - self.k * self._ss * (self._ss * self._cfs - self._s * self._cf)
+            )
 
         else:
             Gqs = u_d * self._ksz
             Gqts = u_d *self.k *np.sqrt(self.eps-self._ss**2.)
             qs = u_d * self._ksz
 
-            c11 = self.k * self._cfs *(self._kz + qs)
-            c21 = Gqs *(self._cfs*(self._cs*(self.k*self._cs+qs)-self.k*self._s*(self._ss *self._cfs-self._s*self._cf))-self.k*self._s*self._ss*self._sfs**2.)
-            c31 = self.k *self._ss*(self.k*self._cs*(self._ss*self._cfs - self._s*self._cf)+ self._s*(self._kz+qs))
-            c41 = self.k*self._css*(self._cfs*(self._cs*(self._kz+qs)-self.k*self._s*(self._ss*self._cfs-self._s*self._cf))-self.k*self._s*self._ss*self._sfs**2.)
-            c51 = -self._css *(self.k**2. *self._ss *(self._ss*self._cfs -self._s*self._cf)+ Gqs*self._cfs*(self._kz+qs))
-            c12 = self.k * self._cfs *(self._kz + qs)
-            c22 = Gqts *(self._cfs*(self._cs*(self._kz+qs)-self.k*self._s*(self._ss *self._cfs-self._s*self._cf))-self.k*self._s*self._ss*self._sfs**2.)
-            c32 = self.k *self._ss*(self.k*self._cs*(self._ss*self._cfs - self._s*self._cf)+ self._s*(self._kz+qs))
-            c42 = self.k*self._css*(self._cfs*(self._cs*(self._kz+qs)-self.k*self._s*(self._ss*self._cfs-self._s*self._cf))-self.k*self._s*self._ss*self._sfs**2.)
-            c52 = -self._css *(self.k**2. *self._ss *(self._ss*self._cfs -self._s*self._cf)+ Gqts*self._cfs*(self._kz+qs))
+            c21 = Gqs * (
+                self._cfs * (
+                    self._cs * (self.k * self._cs + qs)
+                    - self.k * self._s * (self._ss * self._cfs - self._s * self._cf)
+                ) - self.k * self._s * self._ss * self._sfs**2
+            )
 
+            c31 = self.k * self._ss * (
+                self.k * self._cs * (self._ss * self._cfs - self._s * self._cf)
+                + self._s * (self._kz + qs)
+            )
+
+            c41 = self.k * self._css * (
+                self._cfs * (
+                    self._cs * (self._kz + qs)
+                    - self.k * self._s * (self._ss * self._cfs - self._s * self._cf)
+                ) - self.k * self._s * self._ss * self._sfs**2
+            )
+
+            c51 = -self._css * (
+                self.k**2 * self._ss * (self._ss * self._cfs - self._s * self._cf)
+                + Gqs * self._cfs * (self._kz + qs)
+            )
+
+            c12 = self.k * self._cfs * (self._kz + qs)
+
+            c22 = Gqts * (
+                self._cfs * (
+                    self._cs * (self._kz + qs)
+                    - self.k * self._s * (self._ss * self._cfs - self._s * self._cf)
+                ) - self.k * self._s * self._ss * self._sfs**2
+            )
+
+            c32 = self.k * self._ss * (
+                self.k * self._cs * (self._ss * self._cfs - self._s * self._cf)
+                + self._s * (self._kz + qs)
+            )
+
+            c42 = self.k * self._css * (
+                self._cfs * (
+                    self._cs * (self._kz + qs)
+                    - self.k * self._s * (self._ss * self._cfs - self._s * self._cf)
+                ) - self.k * self._s * self._ss * self._sfs**2
+            )
+
+            c52 = -self._css * (
+                self.k**2 * self._ss * (self._ss * self._cfs - self._s * self._cf)
+                + Gqts * self._cfs * (self._kz + qs)
+            )
 
         # now do final calculations ...
         q = self._kz
@@ -510,17 +605,26 @@ class I2EM(SurfaceScatter):
 
 
     def _calc_r_transition(self):
-        """ compute R transition """
-
+        """Compute R transition."""
         Rv0 = (np.sqrt(self.eps)-1.) / (np.sqrt(self.eps) + 1.)
         Rh0 = -Rv0
-
-        Ft = 8. * Rv0**2. + self._ss * (self._cs + np.sqrt(self.eps - self._s2))/(self._cs * np.sqrt(self.eps - self._s2))
+        Ft = 8. * Rv0**2 + self._ss * (
+            (self._cs + np.sqrt(self.eps - self._s2)) 
+            / (self._cs * np.sqrt(self.eps - self._s2))
+        )
 
         idx = np.arange(self.niter)+1
         a0 = (self.ks*self._cs)**(2.*idx)/self.fac
         a1 = np.sum(a0*self.wn)
-        b1 = np.sum(a0 * (np.abs(Ft/2. + 2.**(idx+1) *Rv0/self._cs *np.exp(-(self.ks*self._cs)**2.)))**2. * self.wn)
+        b1 = np.sum(
+            a0 * (
+                np.abs(
+                    Ft / 2.
+                    + 2.**(idx + 1) * Rv0 / self._cs
+                    * np.exp(-(self.ks * self._cs)**2)
+                )**2
+            ) * self.wn
+        )
 
         St = 0.25 * np.abs(Ft)**2. * a1/b1
         St0 = 1. / np.abs(1.+8.*Rv0/(self._cs * Ft))**2.
@@ -529,7 +633,7 @@ class I2EM(SurfaceScatter):
         return Rv0, Rh0, Tf
 
     def _calculate_average_reflection_coefficients(self):
-        assert False, 'Not implemented yet!'
+        raise AssertionError('Not implemented yet!')
         #%----------- compute average reflection coefficients ------------
         #%-- these coefficients account for slope effects, especially near the
         #%brewster angle. They are not important if the slope is small.
@@ -538,9 +642,9 @@ class I2EM(SurfaceScatter):
         #sigy = sigx;
         #xxx = 3*sigx;
 
-        #Rav = dblquad(@(Zx, Zy)Rav_integration(Zx, Zy, cs,s,er,s2,sigx, sigy),-xxx,xxx, -xxx, xxx );
+        #Rav = dblquad(@(Zx, Zy)Rav_integration(Zx, Zy, cs,s,er,s2,sigx, sigy),-xxx,xxx, -xxx, xxx);
 
-        #Rah = dblquad(@(Zx, Zy)Rah_integration(Zx, Zy, cs,s,er,s2,sigx, sigy),-xxx,xxx, -xxx, xxx );
+        #Rah = dblquad(@(Zx, Zy)Rah_integration(Zx, Zy, cs,s,er,s2,sigx, sigy),-xxx,xxx, -xxx, xxx);
 
         #Rav = Rav ./(2*pi * sigx * sigy);
         #Rah = Rah ./(2*pi * sigx * sigy);
@@ -554,41 +658,39 @@ class I2EM(SurfaceScatter):
 
 
         # select proper reflection coefficients
-        if self.mode == 'backscatter':  # todo this comparison might slow down the program as it is called very often; perhaps modify
+        if self.mode == 'backscatter':
+            # todo this comparison might slow down the program as it is called very often; modify?
             Rvt = Rvi + (Rv0 - Rvi) * Tf
             Rht = Rhi + (Rh0 - Rhi) * Tf
         elif self.mode == 'bistatic':
             Rav = Rah = self._calculate_average_reflection_coefficients()
             Rvt = Rav
             Rht = Rah
-            pass
         else:
-            assert False
+            raise AssertionError()
 
         return Rvt, Rht
 
 
 class Roughness(object):
-    """
-    calculate roughness spectrum
-    """
+    """calculate roughness spectrum."""
     def __init__(self, **kwargs):
-        self.niter = kwargs.get('niter', None)
-        self.l = kwargs.get('l', None)
-        self.sig = kwargs.get('sig', None)
-        self.theta = kwargs.get('theta', None)
-        self.thetas = kwargs.get('thetas', None)
-        self.phi = kwargs.get('phi', None)
-        self.phis = kwargs.get('phis', None)
-        self.freq = kwargs.get('freq', None)
-        self.i = kwargs.get('i', None)
+        self.niter = kwargs.get('niter')
+        self.l = kwargs.get('l')
+        self.sig = kwargs.get('sig')
+        self.theta = kwargs.get('theta')
+        self.thetas = kwargs.get('thetas')
+        self.phi = kwargs.get('phi')
+        self.phis = kwargs.get('phis')
+        self.freq = kwargs.get('freq')
+        self.i = kwargs.get('i')
 
         self._check()
         self.n = np.arange(self.niter)+1
         self._init()
 
     def wn(self):
-        assert False, 'Should be implemented in child class!'
+        raise AssertionError('Should be implemented in child class!')
 
     def _init(self):
         ss = np.sin(self.thetas)
@@ -668,9 +770,7 @@ def _calc_wm_matrix_exp(rx, ry, nspec, kl2, s):
 
 
 class ExponentialSpectrum(Roughness):
-    """
-    exponential spectrum
-    """
+    """exponential spectrum."""
     def __init__(self, **kwargs):
         super(ExponentialSpectrum, self).__init__(**kwargs)
 
@@ -682,11 +782,23 @@ class ExponentialSpectrum(Roughness):
         return wn, rss
 
     def calc_wn_matrix(self, rx, ry, nspec):
-        #for i in range(nspec):
-        # n = i+1
-        #return np.array([(i+1) * self._kl2 / ((i+1)**2.+self._kl2*((rx-self._s)**2. + ry**2.))**1.5 for i in range(nspec)])
+        # for i in range(nspec):
+        #     n = i+1
+        #     calc = np.array([
+        #         (i + 1) * self._kl2 / (
+        #             ((i + 1)**2 + self._kl2 * ((rx - self._s)**2 + ry**2))**1.5
+        #         )
+        #         for i in range(nspec)
+        #     ])
+        # return calc
         return _calc_wn_matrix_gauss(rx, ry, nspec, self._kl2, self._s)
 
     def calc_wm_matrix(self, rx, ry, nspec):
-        #return np.array([(i+1) * self._kl2 / ((i+1)**2.+self._kl2*((rx+self._s)**2. + ry**2.))**1.5 for i in range(nspec)])
+        # calc = np.array([
+        #     (i + 1) * self._kl2 / (
+        #         ((i + 1)**2 + self._kl2 * ((rx + self._s)**2 + ry**2))**1.5
+        #     )
+        #     for i in range(nspec)
+        # ])
+        #return calc
         return _calc_wm_matrix_gauss(rx, ry, nspec, self._kl2, self._s)

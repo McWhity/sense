@@ -1,14 +1,12 @@
-"""
-Generic model for dielectric mixing models
-"""
 
 import numpy as np
 
+
 class EpsModel(object):
+    """Generic model for dielectric mixing models."""
     def __init__(self, **kwargs):
-        """
-        Parameters
-        ----------
+        """Parameters.
+
         clay : float
             clay content as fractional volume
         sand : float
@@ -22,7 +20,6 @@ class EpsModel(object):
         t : float
             temperature [°C]
         """
-
         self.clay = kwargs.get('clay', None)
         self.sand = kwargs.get('sand', None)
 

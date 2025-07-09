@@ -1,15 +1,15 @@
-"""
-Class specifying a soil
-"""
+
 import numpy as np
-from . util import f2lam
-from . dielectric import Dobson85
-import pdb
+
+from .dielectric import Dobson85
+from .util import f2lam
+
 
 class Soil(object):
+    """Class specifying a soil."""
     def __init__(self, **kwargs):
-        """
-        Parameters
+        """Parameters.
+
         ----------
         surface: string
             name of used RT-model for surface contribution
@@ -35,7 +35,6 @@ class Soil(object):
 
         empirical soil parameters water cloud model missing!!!!
         """
-
         self.surface = kwargs.get('surface', None)
         self.eps = kwargs.get('eps', None)
         self.mv = kwargs.get('mv', None)
@@ -75,10 +74,7 @@ class Soil(object):
         self.V2 = kwargs.get('V2', None)
 
     def _convert_mv2eps(self):
-        """
-        convert mv to eps
-        using dielectric model
-        """
+        """Convert mv to eps using dielectric model."""
         if (self.clay is None) or (self.sand is None):
             self.eps = None
             print('WARNING: Permittivity can not be calculated due to missing soil texture!')
@@ -90,16 +86,14 @@ class Soil(object):
         self.eps = DC.eps
 
     def _convert_eps2mv(self):
-        """
-        This routine converts soil moisture into
-        dielectric properties and vice versa
+        """This routine converts soil moisture into dielectric properties and vice versa.
 
         future implementations will comprise e.g. the Dobson model
         and others ...
-
-
         """
-        assert self.eps is not None, 'Currently cnversion not implemented yet; you need to provide the DC directly!'
+        assert self.eps is not None, (
+            'Currently conversion not implemented yet; you need to provide the DC directly!'
+        )
 
     def _check(self):
         if self.acl is not None:

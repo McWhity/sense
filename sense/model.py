@@ -1,14 +1,15 @@
-"""
-Basic class for scattering modelling
-"""
-import pdb
+
 import numpy as np
-from . surface import Oh92, Oh04, Dubois95, WaterCloudSurface, I2EM
-from . util import f2lam
-from . scatterer import ScatIso, ScatRayleigh
-from . core import Reflectivity
+
+from .core import Reflectivity
+from .scatterer import ScatIso, ScatRayleigh
+from .surface import I2EM, Dubois95, Oh04, Oh92, WaterCloudSurface
+from .util import f2lam
+
 
 class Model(object):
+    """Basic class for scattering modelling."""
+    
     def __init__(self, **kwargs):
         self.theta = kwargs.get('theta', None)
 
@@ -18,8 +19,7 @@ class Model(object):
         assert self.theta is not None, 'ERROR: no incidence angle was specified!'
 
     def sigma0(self, **kwargs):
-        """
-        calculate sigma
+        """Calculate sigma.
 
         Parameters
         ----------
@@ -30,7 +30,6 @@ class Model(object):
             whereas p=receive, q=transmit
             p,g can be either H or V
         """
-
         self.dB = kwargs.get('dB', False)
         self.pol = kwargs.get('pol', [])
         self._check_pol()
@@ -52,10 +51,10 @@ class Model(object):
                 assert False, 'Invalid polarization: ' + k
 
 class RTModel(Model):
+    """Radiative Transfer Models."""
+
     def __init__(self, **kwargs):
-        """
-        Single scattering model according to Ulaby and Long (2014)
-        Eq. 11.17 or Water Cloud Model according to .....
+        """SSRT Eq. 11.17 (Ulaby and Long (2014)) or WCM (Attema and Ulaby, 1978).
 
         Parameters
         ----------
@@ -88,22 +87,27 @@ class RTModel(Model):
             # check that frequencies are the same!
 
     def _sigma0(self):
-        """
-        basic calculation of Sigma0
-        based on Eq. 11.17 in Ulaby and Long (2014)
+        """Basic calculation of Sigma0 based on Eq. 11.17 in Ulaby and Long (2014).
 
         or only ground and canopy contribution for water cloud model
-
         """
-
         # ground backscatter = attenuated surface
-        self.G = Ground(self.surface, self.canopy, self.models['surface'], self.models['canopy'], theta=self.theta, freq=self.freq)
+        self.G = Ground(
+            self.surface,
+            self.canopy,
+            self.models['surface'],
+            self.models['canopy'],
+            theta=self.theta,
+            freq=self.freq
+        )
         self.s0g = self.G.sigma()  # returns dictionary with different components
 
         # canopy contribution
         self.s0c = self.G.rt_c.sigma_c()   # returns a dictionary
-
-        if (self.models['canopy'] == 'turbid_isotropic') or (self.models['canopy'] == 'turbid_rayleigh'):
+        if (
+            self.models['canopy'] == 'turbid_isotropic'
+            or self.models['canopy'] == 'turbid_rayleigh'
+        ):
             # total canopy ground contribution
             self.s0cgt = self.G.sigma_c_g(self.coherent)
 
@@ -117,16 +121,19 @@ class RTModel(Model):
 
 
     def _combine(self, k):
-        """
-        combine previous calculated backscatter values for SSRT (isotropic or rayleigh) or Water Cloud model
-        """
+        """Combine previous calculated backscatter values.
 
+        For SSRT (isotropic or rayleigh) or Water Cloud model
+        """
         if self.s0g[k] is None:
             return None
         if self.s0c[k] is None:
             return None
         # return np.nansum(np.array([self.s0g[k], self.s0c[k], self.s0gcg[k], self.s0cgt[k]]))
-        if (self.models['canopy'] == 'turbid_isotropic') or (self.models['canopy'] == 'turbid_rayleigh'):
+        if (
+            self.models['canopy'] == 'turbid_isotropic'
+            or self.models['canopy'] == 'turbid_rayleigh'
+        ):
             return np.array(self.s0g[k] + self.s0c[k] + self.s0gcg[k] + self.s0cgt[k])
         elif (self.models['canopy'] == 'water_cloud'):
             return np.array(self.s0g[k]+self.s0c[k])
@@ -135,15 +142,12 @@ class RTModel(Model):
 
 
 class Ground(object):
-    """
-    calculate the (attenuated) ground contribution
-    sigma_pq
-    where p is receive and q is transmit polarization
+    """Calculate the (attenuated) ground contribution sigma_pq.
+
+    p is receive and q is transmit polarization
     """
     def __init__(self, S, C, RT_s, RT_c, theta=None, freq=None):
-        """
-        calculate the attenuated ground contribution
-        to the scattering
+        """Calculate the attenuated ground contribution to the scattering.
 
         Parameters
         ----------
@@ -185,34 +189,87 @@ class Ground(object):
         elif RT_s == 'Oh04':
             self.rt_s = Oh04(self.S.mv, self.S.ks, self.theta)
         elif RT_s == 'Dubois95':
-            self.rt_s = Dubois95(self.S.eps, self.S.ks, self.theta, lam=f2lam(self.freq))
+            self.rt_s = Dubois95(
+                self.S.eps,
+                self.S.ks,
+                self.theta,
+                lam=f2lam(self.freq)
+            )
         elif RT_s == 'I2EM':
             # assert False, 'Implementation not completed'
-            self.rt_s = I2EM(self.freq, self.S.eps, self.S.s, self.S.l, self.theta, xpol=False, auto=False)
+            self.rt_s = I2EM(
+                self.freq,
+                self.S.eps,
+                self.S.s,
+                self.S.l,
+                self.theta,
+                xpol=False,
+                auto=False
+            )
         elif RT_s == 'WaterCloud':
-            if (self.S.C_hh is None) or (self.S.D_hh is None) or (self.S.C_vv is None) or (self.S.D_vv is None) or (self.S.C_hv is None) or (self.S.D_hv is None):
+            if (
+                getattr(self.S, 'C_hh', None) is None or
+                getattr(self.S, 'D_hh', None) is None or
+                getattr(self.S, 'C_vv', None) is None or
+                getattr(self.S, 'D_vv', None) is None or
+                getattr(self.S, 'C_hv', None) is None or
+                getattr(self.S, 'D_hv', None) is None
+            ):
                 assert False, 'Empirical surface parameters for Water Cloud model not specified!'
             else:
-                self.rt_s = WaterCloudSurface(self.S.mv, self.theta, self.S.C_hh, self.S.C_vv, self.S.C_hv, self.S.D_hh, self.S.D_vv, self.S.D_hv)
+                self.rt_s = WaterCloudSurface(
+                    self.S.mv,
+                    self.theta,
+                    self.S.C_hh,
+                    self.S.C_vv,
+                    self.S.C_hv,
+                    self.S.D_hh,
+                    self.S.D_vv,
+                    self.S.D_hv
+                )
         else:
             assert False, 'Unknown surface scattering model'
 
 
         # set canopy models
         if RT_c == 'turbid_isotropic':  # turbid media (homogenous vegetation)
-            self.rt_c = CanopyHomoRT(ke_h=self.C.ke_h, ke_v=self.C.ke_v, ks_h=self.C.ks_h, ks_v=self.C.ks_v, d=self.C.d, theta=self.theta, stype='iso')
+            self.rt_c = CanopyHomoRT(
+                ke_h=self.C.ke_h,
+                ke_v=self.C.ke_v,
+                ks_h=self.C.ks_h,
+                ks_v=self.C.ks_v,
+                d=self.C.d,
+                theta=self.theta,
+                stype='iso'
+            )
         elif RT_c == 'turbid_rayleigh':
-            self.rt_c = CanopyHomoRT(ke_h=self.C.ke_h, ke_v=self.C.ke_v, ks_h=self.C.ks_h, ks_v=self.C.ks_v, d=self.C.d, theta=self.theta, stype='rayleigh')
-
+            self.rt_c = CanopyHomoRT(
+                ke_h=self.C.ke_h,
+                ke_v=self.C.ke_v,
+                ks_h=self.C.ks_h,
+                ks_v=self.C.ks_v,
+                d=self.C.d,
+                theta=self.theta,
+                stype='rayleigh'
+            )
         elif RT_c == 'water_cloud':
-            self.rt_c = WaterCloudCanopy(A_hh=self.C.A_hh, B_hh=self.C.B_hh, A_vv=self.C.A_vv, B_vv=self.C.B_vv, A_hv=self.C.A_hv, B_hv=self.C.B_hv, V1=self.C.V1, V2=self.C.V2, theta=self.theta)
+            self.rt_c = WaterCloudCanopy(
+                A_hh=self.C.A_hh,
+                B_hh=self.C.B_hh,
+                A_vv=self.C.A_vv,
+                B_vv=self.C.B_vv,
+                A_hv=self.C.A_hv,
+                B_hv=self.C.B_hv,
+                V1=self.C.V1,
+                V2=self.C.V2,
+                theta=self.theta
+            )
         else:
             assert False, 'Invalid canopy scattering model: ' + RT_c
 
     def _calc_rho(self):
-        """
-        calculate coherent p-polarized
-        reflectivity
+        """Calculate coherent p-polarized reflectivity.
+
         Ref: Eq. 11.11 (Ulaby, 2014)
 
         Note that the specular reflectivity is corrected by a roughness term
@@ -225,31 +282,52 @@ class Ground(object):
 
         TODO: unclear so far how this relates to surface (soil) scattering models
         """
-
         R = Reflectivity(self.S.eps, self.theta)
         self.rho_v = R.v * np.exp(-4.*np.cos(self.theta)**2.*(self.S.ks**2.))
         self.rho_h = R.h * np.exp(-4.*np.cos(self.theta)**2.*(self.S.ks**2.))
 
-        # implementation in matlab code and book of Ulaby. (Email response from Ulaby: Don't know why he didn't use the roughness correction. He actually would use the roughness corrected version!!)
+        # implementation in matlab code and book of Ulaby.
+        # (Email response from Ulaby: Don't know why he didn't use the roughness correction.
+        # He actually would use the roughness corrected version!!)
         # self.rho_v = R.v
         # self.rho_h = R.h
 
 
 
     def sigma_g_c_g(self):
-
-
-        s_vv = self.rt_c.sigma_vol_back['vv']*np.cos(self.theta)*self.rho_v*self.rho_v*(self.rt_c.t_v*self.rt_c.t_v-self.rt_c.t_v**4.) / (self.C.ke_v + self.C.ke_v)
-        s_hh = self.rt_c.sigma_vol_back['hh']*np.cos(self.theta)*self.rho_h*self.rho_h*(self.rt_c.t_h*self.rt_c.t_h-self.rt_c.t_h**4.) / (self.C.ke_h + self.C.ke_h)
-        s_hv = self.rt_c.sigma_vol_back['hv']*np.cos(self.theta)*self.rho_h*self.rho_v*(self.rt_c.t_h*self.rt_c.t_v-self.rt_c.t_h**2.*self.rt_c.t_v**2.) / (self.C.ke_h + self.C.ke_v)
+        """Calculate ground canopy ground scattering coefficient  Ulaby (2014)."""
+        s_vv = (
+            self.rt_c.sigma_vol_back['vv']
+            * np.cos(self.theta)
+            * self.rho_v
+            * self.rho_v
+            * (self.rt_c.t_v * self.rt_c.t_v - self.rt_c.t_v ** 4.)
+            / (self.C.ke_v + self.C.ke_v)
+        )
+        s_hh = (
+            self.rt_c.sigma_vol_back['hh']
+            * np.cos(self.theta)
+            * self.rho_h
+            * self.rho_h
+            * (self.rt_c.t_h * self.rt_c.t_h - self.rt_c.t_h ** 4.)
+            / (self.C.ke_h + self.C.ke_h)
+        )
+        s_hv = (
+            self.rt_c.sigma_vol_back['hv']
+            * np.cos(self.theta)
+            * self.rho_h
+            * self.rho_v
+            * (self.rt_c.t_h * self.rt_c.t_v - self.rt_c.t_h ** 2. * self.rt_c.t_v ** 2.)
+            / (self.C.ke_h + self.C.ke_v)
+        )
 
 
         return {'vv' : s_vv, 'hh' : s_hh, 'hv' : s_hv}
 
 
     def sigma_c_g(self, coherent=None):
-        """
-        calculate canopy ground scattering coefficient
+        """Calculate canopy ground scattering coefficient.
+
         This is based on Eq. 11.17 (last term) in Ulaby (2014)
         and 11.14 in Ulaby (2014)
 
@@ -260,15 +338,23 @@ class Ground(object):
         coherent : bool
             do coherent calculation for co-pol calculations
         """
-        assert coherent is not None, 'ERROR: please specify explicity if coherent calculations should be made.'
-        if coherent:
-            n = 2.
-        else:
-            n = 1.
+        assert coherent is not None, (
+            'ERROR: please specify explicity if coherent calculations should be made.'
+        )
+        n = 2.0 if coherent else 1.0
 
-        s_vv = n  * self.rt_c.sigma_vol_bistatic['vv'] * self.C.d *(self.rho_v + self.rho_v)*self.rt_c.t_v*self.rt_c.t_v
-        s_hh = n  * self.rt_c.sigma_vol_bistatic['hh'] * self.C.d *(self.rho_h + self.rho_h)*self.rt_c.t_h*self.rt_c.t_h
-        s_hv = 1. * self.rt_c.sigma_vol_bistatic['hv'] * self.C.d *(self.rho_v + self.rho_h)*self.rt_c.t_h*self.rt_c.t_v
+        s_vv = (
+            n * self.rt_c.sigma_vol_bistatic['vv'] * self.C.d *
+            (self.rho_v + self.rho_v) * self.rt_c.t_v * self.rt_c.t_v
+        )
+        s_hh = (
+            n * self.rt_c.sigma_vol_bistatic['hh'] * self.C.d *
+            (self.rho_h + self.rho_h) * self.rt_c.t_h * self.rt_c.t_h
+        )
+        s_hv = (
+            1.0 * self.rt_c.sigma_vol_bistatic['hv'] * self.C.d *
+            (self.rho_v + self.rho_h) * self.rt_c.t_h * self.rt_c.t_v
+        )
 
 
         return {'vv' : s_vv, 'hh' : s_hh, 'hv' : s_hv}
@@ -276,11 +362,7 @@ class Ground(object):
 
 
     def sigma(self):
-        """
-        calculate the backscattering coefficient
-        Eq. 11.4, p.463 Ulaby (2014)
-        """
-
+        """Calculate the backscattering coefficient Eq. 11.4, p.463 Ulaby (2014)."""
         # canopy transmisivities
         t_h = self.rt_c.t_h
         t_v = self.rt_c.t_v
@@ -297,22 +379,20 @@ class Ground(object):
         else:
             s_hv = self.rt_s.hv*t_v*t_h
 
-
         return {'vv' : s_vv, 'hh' : s_hh, 'hv' : s_hv}
 
 
 class CanopyHomoRT(object):
-    """
-    homogeneous canopy RT model
-    assumes homogeneous vertical distribution of scatterers
+    """homogeneous canopy RT model.
 
+    Assumes homogeneous vertical distribution of scatterers
     in that case the Lambert Beer law applies
 
     NOTE that this model is only for BACKSCATTERING GEOMETRY!
     """
     def __init__(self, **kwargs):
-        """
-        Parameters
+        """Parameters.
+
         ----------
         ke_h, ke_v : float
             volume extinction coefficient [Np/m]
@@ -359,42 +439,43 @@ class CanopyHomoRT(object):
         # assert self.ks_v <= self.ke_v
 
     def _set_scat_type(self):
-        """ set scatterer type """
+        """Set scatterer type."""
         if self.stype == 'iso':
-            self.SC = ScatIso(sigma_s_hh=self.ks_h, sigma_s_vv=self.ks_v, sigma_s_hv=self.ks_v)   # note that the cross pol scatt. coeff. is the same as the copol due to isotropic behavior
+            self.SC = ScatIso(
+                sigma_s_hh=self.ks_h,
+                sigma_s_vv=self.ks_v,
+                sigma_s_hv=self.ks_v
+            )#note that the cross pol scatt. coeff. is the same as the copol due to isotropic behavior
         elif self.stype == 'rayleigh':
-            self.SC = ScatRayleigh(sigma_s_hh = self.ks_h, sigma_s_vv=self.ks_v, sigma_s_hv=self.ks_v)  # eq. 11.22
+            self.SC = ScatRayleigh(
+                sigma_s_hh=self.ks_h,
+                sigma_s_vv=self.ks_v,
+                sigma_s_hv=self.ks_v
+            )  # eq. 11.22
         elif self.stype == 'cloud':
             assert False  # here implemenatation of 11.5 then
         else:
             assert False, 'Invalid scatterer type specified: ' + self.stype
 
     def _calc_back_volume(self):
-        """
-        calculate the volume backscattering coefficient sigma_v
+        """Calculate the volume backscattering coefficient sigma_v.
+
         This is a function of the scatterer type chosen (e.g. isotropic,
         rayleigh, cloud model, ...)
         """
         return self.SC.sigma_v_back()
 
     def _calc_sigma_bistatic(self):
-        """
-        calculate volume bistatic scattering coefficient
-        of scatterer
-        """
+        """Calculate volume bistatic scattering coefficient of scatterer."""
         return self.SC.sigma_v_bist()
 
     def _tau(self, k):
-        """
-        Eq. 11.3, Ulaby(2014)
-        """
+        """Eq. 11.3, Ulaby(2014)."""
         # assumption: extinction is isotropic
         return k*self.d/np.cos(self.theta)
 
     def sigma_gcg(self, G_v, G_h):
-        """
-        calculate ground-canopy-ground interactions
-        Eq. 11.16, Ulaby(2014)
+        """Calculate ground-canopy-ground interactions Eq. 11.16, Ulaby(2014).
 
         Parameters
         ----------
@@ -405,19 +486,33 @@ class CanopyHomoRT(object):
         G_h : float
             same as above, but for h-polarization.
         """
-        return G_v*G_h*(self.t_h*self.t_v-self.t_h**2.*self.t_v**2.)*(self.sigma_vol*np.cos(self.theta))/(self.ke_h+self.ke_v)
+        return (
+            G_v * G_h
+            * (self.t_h * self.t_v - self.t_h ** 2. * self.t_v ** 2.)
+            * (self.sigma_vol * np.cos(self.theta))
+            / (self.ke_h + self.ke_v)
+        )
 
     def sigma_c(self):
-        """
-        calculate canopy volume contribution only
+        """Calculate canopy volume contribution only.
+
         Eq. 11.10 + 11.16 as seen in 11.17, Ulaby (2014)
         """
-
-        s_hh = (1.-self.t_h*self.t_h)*(self.sigma_vol_back['hh']*np.cos(self.theta))/(self.ke_h+self.ke_h)
-        s_vv = (1.-self.t_v*self.t_v)*(self.sigma_vol_back['vv']*np.cos(self.theta))/(self.ke_v+self.ke_v)
-        s_hv = (1.-self.t_h*self.t_v)*(self.sigma_vol_back['hv']*np.cos(self.theta))/(self.ke_h+self.ke_v)
-        # pdb.set_trace()
-
+        s_hh = (
+            (1. - self.t_h * self.t_h)
+            * (self.sigma_vol_back['hh'] * np.cos(self.theta))
+            / (self.ke_h + self.ke_h)
+        )
+        s_vv = (
+            (1. - self.t_v * self.t_v)
+            * (self.sigma_vol_back['vv'] * np.cos(self.theta))
+            / (self.ke_v + self.ke_v)
+        )
+        s_hv = (
+            (1. - self.t_h * self.t_v)
+            * (self.sigma_vol_back['hv'] * np.cos(self.theta))
+            / (self.ke_h + self.ke_v)
+        )
 
         # this seems o.k. here
 #        a=self.sigma_vol_back['hh']
@@ -426,17 +521,16 @@ class CanopyHomoRT(object):
 
         return {'hh' : s_hh, 'vv' : s_vv, 'hv' : s_hv}
 
-
 # 502-503
 
-
 class WaterCloudCanopy(object):
-    """
+    """Water cloud model Attema and Ulaby (1978).
 
+    Canopy part
     """
     def __init__(self, **kwargs):
-        """
-        Parameters
+        """Parameters.
+
         ----------
         A, B : float
             fitting parameters
@@ -447,7 +541,6 @@ class WaterCloudCanopy(object):
         theta : float, ndarray
             incidence angle [rad]
         """
-
         self.A_hh = kwargs.get('A_hh', None)
         self.B_hh = kwargs.get('B_hh', None)
         self.A_vv = kwargs.get('A_vv', None)
@@ -476,6 +569,7 @@ class WaterCloudCanopy(object):
         assert self.theta is not None
 
     def sigma_c(self):
+        """Calculate canopy backscatter part."""
         s_hh =  self.A_hh * self.V1 * np.cos(self.theta) * (1 - self._tau(self.B_hh))
         s_vv = self.A_vv * self.V1 * np.cos(self.theta) * (1 - self._tau(self.B_vv))
         s_hv =  self.A_hv * self.V1 * np.cos(self.theta) * (1 - self._tau(self.B_hv))

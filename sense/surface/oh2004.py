@@ -1,23 +1,19 @@
-"""
-This module implements the Oh et al. (2004)
-empirical surface backscattering model as documented
-in Ulaby et al (2014), chapter 10.5
 
-References
-----------
-Oh (2004): Quantitative retrieval of soil moisture content and surface roughness from multipolarized radar observations of bare soil surface. IEEE TGRS 42(3). 596-601.
-"""
-
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from . scatter import SurfaceScatter
+from .scatter import SurfaceScatter
+
 
 class Oh04(SurfaceScatter):
+    """Oh et al. (2004) empirical surface backscattering model.
+
+    After Ulaby et al (2014), chapter 10.5
+    """
+
     def __init__(self, mv, ks, theta):
-        """
-        Parameters
-        ----------
+        """Parameters.
+
         mv : float, ndarray
             volumetric soil moisture m3/m3
         ks : float

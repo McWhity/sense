@@ -1,8 +1,21 @@
-"""
-Major surface scatter class
-"""
+
 class SurfaceScatter(object):
-    def __init__(self, eps=None, ks=None, theta=None, kl=None, mv=None, C_hh=None, C_vv=None, C_hv=None, D_hh=None, D_vv=None, D_hv=None, **kwargs):
+    """Major surface scatter class."""
+    def __init__(
+        self,
+        eps=None,
+        ks=None,
+        theta=None,
+        kl=None,
+        mv=None,
+        C_hh=None,
+        C_vv=None,
+        C_hv=None,
+        D_hh=None,
+        D_vv=None,
+        D_hv=None,
+        **kwargs
+    ):
         self.eps = eps
         self.ks = ks
         self.theta = theta

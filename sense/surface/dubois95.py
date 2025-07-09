@@ -1,16 +1,16 @@
-"""
-implements the Dubois95 model
-as described in Ulaby (2014), Chapter 10.6
-"""
-import numpy as np
-import matplotlib.pyplot as plt
 
-from . scatter import SurfaceScatter
+import matplotlib.pyplot as plt
+import numpy as np
+
+from .scatter import SurfaceScatter
+
 
 class Dubois95(SurfaceScatter):
+    """Dubois95 model described in Ulaby (2014), Chapter 10.6."""
+
     def __init__(self, eps, ks, theta, lam=None):
-        """
-        Parameters
+        """Parameters.
+
         ----------
         eps : complex
             relative dielectric permitivity
@@ -22,7 +22,6 @@ class Dubois95(SurfaceScatter):
         lam : float
             wavelength [m]
         """
-
         super(Dubois95, self).__init__(eps, ks, theta)
         self.lam = lam
         assert self.lam is not None
@@ -35,11 +34,7 @@ class Dubois95(SurfaceScatter):
         return self._vv(lam, ks), self._hh(lam, ks)
 
     def _hh(self, lam, ks):
-        """
-        lam : float
-            wavelength in cm
-        """
-
+        """Lam : float; wavelength in cm."""
         a = (10.**-2.75)*(np.cos(self.theta)**1.5)/(np.sin(self.theta)**5.)
         c = 10.**(0.028*np.real(self.eps)*np.tan(self.theta))
         d = ((ks*np.sin(self.theta))**1.4)*lam**0.7
@@ -47,7 +42,7 @@ class Dubois95(SurfaceScatter):
         return a*c*d
 
     def _vv(self, lam, ks):
-        """ eq. 10.41b """
+        """Eq. 10.41b."""
         b = 10.**(-2.35)*((np.cos(self.theta)**3.) / (np.sin(self.theta)**3.))
         c = 10.**(0.046*np.real(self.eps)*np.tan(self.theta))
         d = (ks*np.sin(self.theta))**1.1*lam**0.7
@@ -55,6 +50,7 @@ class Dubois95(SurfaceScatter):
         return b*c*d
 
     def plot(self):
+        """Plotting helper."""
         f = plt.figure()
         ax = f.add_subplot(111)
         t = np.rad2deg(self.theta)

@@ -1,20 +1,19 @@
-"""
-This module implements a Water Cloud Model after Attema and Ulaby 1978
-References
------------
-Attema and Ulaby (1978): Vegetation modeled as a water cloud. Radio Science. 13(2). 357–364
-"""
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 from .scatter import SurfaceScatter
-import pdb
+
+
 class WaterCloudSurface(SurfaceScatter):
+    """Attema and Ulaby (1978): Vegetation modeled as a water cloud.
+
+    Only surface part.
+    """
+
     def __init__(self, mv, theta, C_hh, C_vv, C_hv, D_hh, D_vv, D_hv):
-        """
-        Parameters
-        ----------
+        """Parameters.
+
         mv : float, ndarray
             soil moisture [m³/m³]
         theta : float, ndarray
@@ -24,7 +23,16 @@ class WaterCloudSurface(SurfaceScatter):
         D : float
             empirical parameter
         """
-        super(WaterCloudSurface, self).__init__(mv=mv, theta=theta, C_hh=C_hh, C_vv=C_vv, C_hv=C_hv, D_hh=D_hh, D_vv=D_vv, D_hv=D_hv)
+        super(WaterCloudSurface, self).__init__(
+            mv=mv,
+            theta=theta,
+            C_hh=C_hh,
+            C_vv=C_vv,
+            C_hv=C_hv,
+            D_hh=D_hh,
+            D_vv=D_vv,
+            D_hv=D_hv
+        )
 
         # calculate surface component
         # if self.C_vv and self.D_vv:

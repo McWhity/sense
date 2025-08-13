@@ -18,16 +18,18 @@ Installation via Docker
 ----------------------------------------
 .. include:: text_blocks_README_RtD/installation_with_docker.rst
 
-Installation of dependencies needed for testing, running jupyter notebooks and creating ReadTheDocs documentation (not needed if using Docker).
-----------------------------------------
+Optional: Installation of further dependencies
+------------------------------------------------
 .. include:: text_block_README_RtD/testing_rtd_jupyter_dependencies.rst
 
 Summary of dependencies
------------------------
+------------------------
 
 Functionality
+
 .. literalinclude:: ../requirements.txt
 
 Testing, Jupyter, ReadTheDocs
+
 .. literalinclude:: ../docs/docs_requirements.txt
 

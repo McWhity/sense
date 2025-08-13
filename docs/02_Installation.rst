@@ -20,16 +20,16 @@ Installation via Docker
 
 Optional: Installation of further dependencies
 ------------------------------------------------
-.. include:: text_block_README_RtD/testing_rtd_jupyter_dependencies.rst
+.. include:: text_blocks_README_RtD/testing_rtd_jupyter_dependencies.rst
 
 Summary of dependencies
 ------------------------
 
-Functionality
+Needed for core functionality
 
 .. literalinclude:: ../requirements.txt
 
-Testing, Jupyter, ReadTheDocs
+Needed for testing, jupyter, ReadTheDocs
 
 .. literalinclude:: ../docs/docs_requirements.txt
 

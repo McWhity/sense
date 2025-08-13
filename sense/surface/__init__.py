@@ -1,3 +1,4 @@
+"""Surface scattering models."""
 from .dubois95 import Dubois95
 from .i2em import *
 from .oh1992 import Oh92

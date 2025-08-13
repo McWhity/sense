@@ -18,9 +18,16 @@ Installation via Docker
 ----------------------------------------
 .. include:: text_blocks_README_RtD/installation_with_docker.rst
 
-Further information
--------------------
+Installation of dependencies needed for testing, running jupyter notebooks and creating ReadTheDocs documentation (not needed if using Docker).
+----------------------------------------
+.. include:: text_block_README_RtD/testing_rtd_jupyter_dependencies.rst
 
-.. literalinclude:: ../environment.yml
+Summary of dependencies
+-----------------------
 
-Please see the `environment file <https://github.com/McWhity/sense/blob/master/environment.yml>`_ for a list of all installed dependencies during the installation process.
+Functionality
+.. literalinclude:: ../requirements.txt
+
+Testing, Jupyter, ReadTheDocs
+.. literalinclude:: ../docs/docs_requirements.txt
+

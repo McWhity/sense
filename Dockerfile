@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
+COPY docs/docs_requirements.txt /tmp/docs_requirements.txt
+RUN pip install -r /tmp/docs_requirements.txt
+
 WORKDIR /tmp/
 
 # copy everything in root dir to image. customize here and/or in .dockerignore

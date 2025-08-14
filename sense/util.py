@@ -1,6 +1,4 @@
-"""
-Module for some utilty functions
-"""
+"""Module for some utilty functions."""
 
 c0=299792458.  # speed of light [m/s]
 

@@ -33,6 +33,8 @@ class Soil:
         optional fractional clay content
     sand : float
         optional fraction sand content
+    bulk : float
+        bulk density [g/cm**3]
     C_hh : float
         empirical parameter (Water Cloud Model)
     D_hh : float
@@ -59,6 +61,7 @@ class Soil:
     acl: Optional[str] = None
     clay: Optional[float] = None
     sand: Optional[float] = None
+    bulk: Optional[float] = 1.65
     debye: Optional[float] = None
     dc_model: str = "Dobson85"
 
@@ -107,7 +110,8 @@ class Soil:
                 sand=self.sand,
                 mv=self.mv,
                 freq=self.f,
-                debye=self.debye
+                debye=self.debye,
+                bulk=self.bulk
             )
         else:
             raise ValueError(f"Invalid DC model! {self.dc_model}")

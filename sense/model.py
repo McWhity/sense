@@ -32,7 +32,7 @@ class Model:
         """
         self.dB = dB
         self.pol = pol or []
-        self._check_pol()
+        #self._check_pol()
 
         sigma = self._sigma0()
         if self.dB:
@@ -169,7 +169,8 @@ class Ground:
         assert self.freq is not None, 'Frequency needs to be provided'
         self._check_models()
         self._set_models()
-        if self.S.surface != 'WaterCloud':
+        
+        if self.RT_c != 'water_cloud':
             self._calc_rho()
 
     def _check_models(self):

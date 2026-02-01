@@ -9,3 +9,11 @@ ipykernel
 myst-nb
 docutils
 pandoc
+geopandas
+stackstac
+pystac_client
+planetary_computer
+shapely
+odc
+odc-stac
+rioxarray

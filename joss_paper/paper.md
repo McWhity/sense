@@ -50,6 +50,8 @@ Such a modular framework provides an opportunity to easily plug and play with di
 SenSE facilitates the application of RT models, especially for comparative analysis.
 Over time, the framework is expected to grow, incorporating more RT models (e.g., passive microwave domain) and supplementary functions (e.g., more dielectric mixing models).
 
+While SenSE is a theoretical framework, it is designed to be compatible with data from a wide range of active microwave platforms, including both space-borne missions—such as Sentinel-1 (C-band), ALOS-2 PALSAR-2 (L-band), and TerraSAR-X (X-band)—and various air-borne SAR sensors. To utilize data from these platforms within the framework, the primary requirement is the provision of sensor-specific parameters, namely the incidence angle (θ), the radar frequency or wavelength, and the polarization state (e.g., VV, VH, HH). Additionally, since the RT models within SenSE typically operate on calibrated backscatter coefficients, input data must be pre-processed to provide sigma nought backscatter values.
+
 # Applications
 The Python framework was employed within the EU-sponsored MULTIPLY Project (https://cordis.europa.eu/project/id/687320).
 Furthermore, the implementation of RT models in SenSE played a crucial role in the analysis conducted for several publications [@weis_evaluation_2020; @weis_sentinel-1_2021; @weis_rtm-based_2024].

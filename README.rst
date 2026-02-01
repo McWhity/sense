@@ -36,6 +36,10 @@ Installation via Docker
 ~~~~~~~~~~~~~~~~~~~~~~~
 .. include:: docs/text_blocks_README_RtD/installation_with_docker.rst
 
+Optional: Installation of further dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. include:: docs/text_blocks_README_RtD/testing_rtd_jupyter_dependencies.rst
+
 Usage
 -----
 

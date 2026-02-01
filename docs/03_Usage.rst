@@ -4,10 +4,10 @@ Usage
 .. toctree::
     :maxdepth: 2
 
-    ./notebooks/Oh04.ipynb
-    ./notebooks/I2EM.ipynb
-    ./notebooks/Dubois95_SSRT.ipynb
-    ./notebooks/sm_retrieval.ipynb
+    ./notebooks/Example_1_Forward_modeling_of_RT_models_surface_part.ipynb
+    ./notebooks/Example_2_Forward_modeling_of_RT_model_combination.ipynb
+    ./notebooks/Example_3_Inversion_of_RT_models.ipynb
+    ./notebooks/Example_4_Soil_moisture_retrieval.ipynb
 
 Required input paramter
 -------------------------

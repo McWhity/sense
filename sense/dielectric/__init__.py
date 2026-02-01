@@ -1,4 +1,2 @@
-"""
-Dielectric mixing models
-"""
-from . dobson85 import Dobson85
+"""Dielectric mixing models."""
+from .dobson85 import Dobson85

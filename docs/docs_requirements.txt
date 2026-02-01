@@ -1,0 +1,19 @@
+-r ../requirements.txt
+sphinxcontrib-bibtex
+pytest>=4.6
+jupyter
+sphinx_rtd_theme
+nbconvert
+mistune
+ipykernel
+myst-nb
+docutils
+pandoc
+geopandas
+stackstac
+pystac_client
+planetary_computer
+shapely
+odc
+odc-stac
+rioxarray

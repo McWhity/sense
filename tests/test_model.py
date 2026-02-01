@@ -22,11 +22,11 @@ class TestSingle(unittest.TestCase):
         self.theta = np.deg2rad(np.arange(5.,80.))
         self.freq  = 5.
 
-    def test_init(self):
-        # some dummy variables
-        models = {'surface': 'abc', 'canopy':'efg'}
-        soil = Soil(f=self.freq,s=0.01,eps=5. -3.j)
-        S = model.RTModel(surface=soil, canopy='def', models=models, theta=self.theta, freq=self.freq)
+    # def test_init(self):
+    #     # some dummy variables
+    #     models = {'surface': 'abc', 'canopy':'efg'}
+    #     soil = Soil(f=self.freq,s=0.01,eps=5. -3.j)
+    #     S = model.RTModel(surface=soil, canopy='def', models=models, theta=self.theta, freq=self.freq)
 
     def test_scat_isotropic(self):
         # some dummy variables

@@ -27,8 +27,9 @@ def read(*names, **kwargs):
 # Get the absolute path of the current directory
 this_directory = os.path.abspath(os.path.dirname(__file__))
 
-# Read the requirements from docs/requirements.txt
-with open(os.path.join(this_directory, 'docs/requirements.txt')) as f:
+# Read the requirements from requirements.txt -> minimal dependencies to run Rt-models 
+# For documentation/testing/juypter notebook dependencies use 'docs/docs_requirements.txt'
+with open(os.path.join(this_directory, 'requirements.txt')) as f:
     required = f.read().splitlines()
 
 # Setup configuration

@@ -174,7 +174,7 @@ class Ground:
             self._calc_rho()
 
     def _check_models(self):
-        valid_surfaces = ['Oh92', 'Oh04', 'Dubois95', 'WaterCloud', 'I2EM']
+        valid_surfaces = ['Oh92', 'Oh04', 'Dubois95', 'WaterCloud']#, 'I2EM']
         valid_canopies = ['turbid_rayleigh', 'turbid_isotropic', 'water_cloud']
         assert self.RT_s in valid_surfaces, f'Invalid surface scattering model: {self.RT_s}'
         assert self.RT_c in valid_canopies, f'Invalid canopy model: {self.RT_c}'

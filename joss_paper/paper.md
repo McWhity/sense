@@ -32,7 +32,7 @@ This flexibility facilitates seamless model exchange, enhancing the framework's 
 The SenSE package currently includes several surface models such as Oh92 [@oh_empirical_1992], Oh04 [@yisok_oh_quantitative_2004], Dubois95 [@dubois_measuring_1995], IEM [@fung_backscattering_1992], and the surface component of the Water Cloud Model (WCM) [@attema_vegetation_1978].
 For canopy modeling, it supports models like SSRT [@de_roo_semi-empirical_2001, @ulaby_microwave_2014] and WCM [@attema_vegetation_1978].
 
-Additionally, the framework incorporates the dielectric mixing model by Dobson et al. [@dobson_microwave_1985], available in various versions for converting soil moisture content to a dielectric constant.
+Additionally, the framework incorporates the dielectric mixing model by @dobson_microwave_1985, available in various versions for converting soil moisture content to a dielectric constant.
 SenSE also includes essential utility functions, such as those for frequency-wavelength conversion and calculating Fresnel reflectivity coefficients, further enhancing its analytical capabilities.
 
 For more detailed information, users are directed to the ReadtheDocs documentation and the original sources of each model, ensuring comprehensive access to technical details and operational guidelines.
@@ -62,7 +62,7 @@ Further collaboration with researchers in the field of vegetation optical depths
 Consequently, the functionality of SenSE will continue to be used, and further extensions of SenSE are anticipated.
 
 # Other available software scripts (Ulaby and Long code library)
-Ulaby and Long [@ulaby_microwave_2014] authored an extensive book on the fundamentals of microwave remote sensing, including a wealth of MATLAB codes for demonstration purposes.
+@ulaby_microwave_2014 authored an extensive book on the fundamentals of microwave remote sensing, including a wealth of MATLAB codes for demonstration purposes.
 However, these MATLAB codes consist of individual snippets from different RT models, which makes it challenging to interchange combinations of RT models.
 While the interactive version of the MATLAB codes is effective for demonstration, it does not support processing large datasets.
 SenSE addresses the limitations of the MATLAB approach through practical examples provided in various Jupyter notebooks.
